@@ -14,17 +14,17 @@ define('M_DB_PASS', '');
 define('M_DB_NOMBRE', 'faltascabos');
 
 #Constantes de Conexion SQLSERVER
-define('S_DB_SERVER', 'DESKTOP-2POHOQ5\\JUAN');
+define('S_DB_SERVER', 'DESKTOP-2POHOQ5\\JUAN2017');
 define('S_DB_USER', 'sa');
 define('S_DB_PASS', 'Enterprice9');
-define('S_DB_NOMBRE', 'bahia');
+define('S_DB_NOMBRE', 'NUEVA_EMPRESA');
 
 define('Unidad', 'C:\\apsisistemas\\ARCHIVOS\\');
 #Constantes de la App
 define('HTML_DIR', 'html/');
 define('TITULO_PAGINA', 'PRENOMINA');
 define('FECHA_MODIFICACION', 'Ultima Actualización : 16/11/2017');
-define('URL_PAGINA', 'http://localhost:8080/DEPURADO_PRENOMINA/GENERAL/Prenomina/');
+define('URL_PAGINA', 'http://localhost:8080/GitHub/General/PrenominaGeneral/');
 
 define('Autoriza1', 'sudo');
 define('Autoriza2', 'Nominas');
