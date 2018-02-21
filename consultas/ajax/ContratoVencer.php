@@ -67,7 +67,7 @@ $nuevafecha561 = date ( 'Ymd' , $nuevafecha561 );
 $nuevafecha5612 = strtotime ( '-4 day' , strtotime ( $fecha56 ) ) ;
 $nuevafecha5612 = date ( 'Ymd' , $nuevafecha5612 );
 
-$sql561 = "SELECT con.codigo, em.ap_paterno+' '+em.ap_materno+' '+em.nombre AS nombre,convert (varchar(10), fchterm, 103) AS fchterm FROM contratos AS con INNER JOIN empleados AS em ON em.codigo = con.codigo WHERE fchterm = '".date("d-m-Y")."' AND vencido = 'F' AND ".$comSql.";";
+$sql561 = "SELECT con.codigo, em.ap_paterno+' '+em.ap_materno+' '+em.nombre AS nombre,convert (varchar(10), fchterm, 103) AS fchterm FROM contratos AS con INNER JOIN empleados AS em ON em.codigo = con.codigo WHERE fchterm = '".date("Ymd")."' AND vencido = 'F' AND ".$comSql.";";
 
 $num2 = 0;
 $numcolR = $objBDSQL->obtenfilas($sql56);
@@ -157,7 +157,7 @@ if($num1 == 0 && $num2 == 0){
 			<tbody>
 		';
 
-		$resultado = $objBDSQL2->consultaBD($sql561);
+		$resultado = $objBDSQL->consultaBD($sql561);
 		if($resultado['error'] == 1){
 	    $file = fopen("log/log".date("d-m-Y").".txt", "a");
 	  	fwrite($file, ":::::::::::::::::::::::ERROR SQL:::::::::::::::::::::::".PHP_EOL);

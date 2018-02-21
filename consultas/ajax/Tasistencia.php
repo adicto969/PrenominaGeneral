@@ -292,7 +292,7 @@ if($DepOsub == 1)
   '".$supervisor."',
   '".$IDEmpresa."',
   '".$_tipoNom."',
-  'LEFT (L.centro, 10) = LEFT (''".$centro."'', ".$MascaraEm.")',
+  'LEFT (L.centro, ".$MascaraEm.") = LEFT (''".$centro."'', ".$MascaraEm.")',
   '1',
   '".$pagina."',
   '".$cantidadXpagina."',

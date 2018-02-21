@@ -1,7 +1,0 @@
-:::::::::::::::::::::::LOGIN:::::::::::::::::::::::
-[20/02/2018 10:50:22 PM] - SE HA LOGEADO EL USUARIO: sudo
-:::::::::::::::::::::::ERROR SQL:::::::::::::::::::::::
-[20/02/2018 10:52:48 PM] - SQLSTATE: 42000
-[20/02/2018 10:52:48 PM] - CODIGO: 537
-[20/02/2018 10:52:48 PM] - MENSAJE: [Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Invalid length parameter passed to the LEFT or SUBSTRING function.
-[20/02/2018 10:52:48 PM] - CONSULTA: SELECT LEN (LEFT (mascara, charindex(' ', mascara) -1)) AS mascara FROM empresas WHERE empresa = '1';

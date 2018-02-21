@@ -87,6 +87,8 @@ if($numCol['error'] == 1){
 	exit();
 }
 
+
+
 if($numCol['cantidad'] > 0){
 
 	$result['contenido'] .=  '
@@ -138,6 +140,7 @@ if($numCol['cantidad'] > 0){
 				</tr>
 			</thead>
 			<tbody>';
+
 	$resultado = $objBDSQL->consultaBD($queryS);
 
 	if($resultado['error'] == 1){
@@ -165,7 +168,7 @@ if($numCol['cantidad'] > 0){
 			<tr>
 				<td>'.$row["codigo"].'</td>
 				<td>'.utf8_encode($row["nombre"]).'</td>
-				<td>'.$row["actividad"].'</td>';
+				<td>'.utf8_encode($row["actividad"]).'</td>';
 
 		$consultM = "SELECT PDOM, DLaborados, PA, PP FROM ajusteempleado WHERE IDEmpleado = '".$row["codigo"]."';";
 
@@ -228,8 +231,7 @@ if($numCol['cantidad'] > 0){
 				<td><p style="text-align: center;"><input type="checkbox" name="'.$row["codigo"].'[3]" value="1" '.$c4.' id="Q4'.$row["codigo"].'"><label for="Q4'.$row["codigo"].'"></label></p></td>
 			</tr>
 		';
-	}
-
+	}	
 
 	$result['contenido'] .='
 			</tbody>
@@ -239,7 +241,7 @@ if($numCol['cantidad'] > 0){
 
 }else {
 	//echo "NO SE ENCONTRATON RESULTADOS";
-	$result['contenido'] .=  '
+	$result['contenido'] =  '
 	<div style="display:flex;width: auto;float: right;border: 1px solid rgba(0, 0, 0, .2);">
 		<div onclick="ant();" style="padding: 10px 13px 0px 13px;border-right: 1px solid rgba(0, 0, 0, 0.2);cursor: pointer;"><i class="material-icons">chevron_left</i></div>
 		<div style="padding: 10px 13px 0 13px;" id="paginador">1 de 10</div>
@@ -272,7 +274,17 @@ if($numCol['cantidad'] > 0){
 	$result['contenido'] .= '<div style="width: 100%" class="deep-orange accent-4"><h6 class="center-align" style="padding-top: 5px; padding-bottom: 5px; color: white;">No se encotro resultado !</h6></div>';
 }
 
-echo json_encode($result);
+$result = json_encode($result);
+if($result === false){
+	echo "error en json = ".json_last_error_msg();
+}
+
+if(empty($result)){
+	echo "result vacio";	
+}else {
+	print_r($result);
+}
+
 
 $objBDSQL->liberarC();
 $objBDSQL2->liberarC2();

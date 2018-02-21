@@ -53,7 +53,7 @@ if($DepOsub == 1){
           '".$supervisor."',
           '".$IDEmpresa."',
           '".$tipoNom."',
-          'LEFT (L.centro, 10) = LEFT (''".$centro."'', ".$MascaraEm.")',
+          'LEFT (L.centro, ".$MascaraEm.") = LEFT (''".$centro."'', ".$MascaraEm.")',
           '1',
           '1',
           '10',
