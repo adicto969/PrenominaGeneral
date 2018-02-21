@@ -117,7 +117,7 @@ if(isset($_SESSION['IDUser'])){
   $datos = $objBDSQL->obtenResult();
   if(empty($datos)){
     $error = "NO SE ENCONTRO LA EMPRESA";
-    echo "<h1 style='text-align:center;'>".$error."<h1>";
+    echo "<h1 style='text-align:center;'>".$error."<h1>"; 
   }else {
     $MascaraEm = $datos['mascara'];
   }
