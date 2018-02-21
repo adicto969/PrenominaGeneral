@@ -99,30 +99,57 @@ if(isset($_SESSION['IDUser'])){
 
   $objBDSQL->liberarC();
 
+  $queryVerifi = "SELECT charindex(' ', mascara) AS num FROM empresas WHERE empresa = '$IDEmpresa';";
   $query = "SELECT LEN (LEFT (mascara, charindex(' ', mascara) -1)) AS mascara FROM empresas WHERE empresa = '$IDEmpresa';";
   $MascaraEm = "";
-  $conResult = $objBDSQL->consultaBD($query);
-  if($conResult['error'] == 1){
+  $conResult = $objBDSQL->consultaBD($queryVerifi);
+  if($conResult['error'] == 1) {
     $file = fopen("log/log".date("d-m-Y").".txt", "a");
-    fwrite($file, ":::::::::::::::::::::::ERROR SQL:::::::::::::::::::::::".PHP_EOL);
-    fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$conResult['SQLSTATE'].PHP_EOL);
-    fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$conResult['CODIGO'].PHP_EOL);
-    fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$conResult['MENSAJE'].PHP_EOL);
-    fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - CONSULTA: '.$query.PHP_EOL);
-    fclose($file);
-    $error = "ERROR AL CONSULTAR INFORMACION DE LA EMPRESA (CONSULTA GENERAL)";
-    echo "<h1 style='text-align:center;'>".$error."<h1>";
-    exit();
-  }
-  $datos = $objBDSQL->obtenResult();
-  if(empty($datos)){
-    $error = "NO SE ENCONTRO LA EMPRESA";
-    echo "<h1 style='text-align:center;'>".$error."<h1>"; 
+      fwrite($file, ":::::::::::::::::::::::ERROR SQL:::::::::::::::::::::::".PHP_EOL);
+      fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$conResult['SQLSTATE'].PHP_EOL);
+      fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$conResult['CODIGO'].PHP_EOL);
+      fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$conResult['MENSAJE'].PHP_EOL);
+      fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - CONSULTA: '.$query.PHP_EOL);
+      fclose($file);
+      $error = "ERROR AL CONSULTAR INFORMACION DE LA EMPRESA (CONSULTA GENERAL : LINE 114)";
+      echo "<h1 style='text-align:center;'>".$error."<h1>";
+      exit();
   }else {
-    $MascaraEm = $datos['mascara'];
-  }
 
-  $objBDSQL->liberarC();
+    $datos = $objBDSQL->obtenResult();
+    if(empty($datos)){
+      $error = "NO SE ENCONTRO LA EMPRESA : LINE 121";
+      echo "<h1 style='text-align:center;'>".$error."<h1>"; 
+    }else {
+      $MascaraEm = $datos['num'];
+    }
+    $objBDSQL->liberarC();
+
+    if($MascaraEm > 0){
+      $conResult = $objBDSQL->consultaBD($query);
+      if($conResult['error'] == 1){
+        $file = fopen("log/log".date("d-m-Y").".txt", "a");
+        fwrite($file, ":::::::::::::::::::::::ERROR SQL:::::::::::::::::::::::".PHP_EOL);
+        fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$conResult['SQLSTATE'].PHP_EOL);
+        fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$conResult['CODIGO'].PHP_EOL);
+        fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$conResult['MENSAJE'].PHP_EOL);
+        fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - CONSULTA: '.$query.PHP_EOL);
+        fclose($file);
+        $error = "ERROR AL CONSULTAR INFORMACION DE LA EMPRESA (CONSULTA GENERAL)";
+        echo "<h1 style='text-align:center;'>".$error."<h1>";
+        exit();
+      }
+      $datos = $objBDSQL->obtenResult();
+      if(empty($datos)){
+        $error = "NO SE ENCONTRO LA EMPRESA";
+        echo "<h1 style='text-align:center;'>".$error."<h1>"; 
+      }else {
+        $MascaraEm = $datos['mascara'];
+      }
+    }
+    $objBDSQL->liberarC();
+  }
+  
 
   $query = "SELECT LTRIM(RTRIM(nombre)) AS nombre FROM supervisores WHERE supervisor = '".$supervisor."' AND empresa = '".$IDEmpresa."'";
   $NombreSupervisor = "";
