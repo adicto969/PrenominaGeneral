@@ -7,7 +7,7 @@ function GTasistencia(){
     conexion.onreadystatechange = function() {
       if(conexion.readyState == 4 && conexion.status == 200){
           try {
-              var jsonDatos = JSON.parse(conexion.responseText);
+              var jsonDatos = JSON.parse(conexion.responseText.replace(/\ufeff/g, ''));
               if(jsonDatos.error == 0){
                 if(jsonDatos.excel == 1){
                   $('#textCargado').html(jsonDatos.archivo);
@@ -47,7 +47,7 @@ function ActualizarT() {
     conexion = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
     conexion.onreadystatechange = function() {
       if(conexion.readyState == 4 && conexion.status == 200){
-        if(conexion.responseText == 1){
+        if(conexion.responseText.replace(/\ufeff/g, '') == 1){
           document.getElementById('textCargado').innerHTML = "DATOS ACTUALIZADOS";
           setTimeout(function(){
             $("#modal1").modal('close');
@@ -83,7 +83,7 @@ function CP(){
       conexion = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
       conexion.onreadystatechange = function(){
         if(conexion.readyState == 4 && conexion.status == 200){
-          if(conexion.responseText != 1){
+          if(conexion.responseText.replace(/\ufeff/g, '') != 1){
             console.log(conexion.responseText);
           }
         }
@@ -105,7 +105,7 @@ function GuardarT(){
   conexion = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
   conexion.onreadystatechange = function() {
     if(conexion.readyState == 4 && conexion.status == 200){
-      if(conexion.responseText == 1){
+      if(conexion.responseText.replace(/\ufeff/g, '') == 1){
         document.getElementById('textCargado').innerHTML = "DATOS GUARDADOS";
         setTimeout(function(){
           $("#modal1").modal('close');
@@ -138,7 +138,7 @@ function CerrarT(estado){
   conexion = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
   conexion.onreadystatechange = function() {
     if(conexion.readyState == 4 && conexion.status == 200){
-      if(conexion.responseText == 3){
+      if(conexion.responseText.replace(/\ufeff/g, '') == 3){
         console.log(conexion.responseText);
         if(estado == 1){
           document.getElementById('textCargado').innerHTML = "PERIODO CERRADO";
@@ -212,7 +212,7 @@ function GFaltas(fecha = '0'){
     conexion = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
     conexion.onreadystatechange = function() {
       if(conexion.readyState == 4 && conexion.status == 200){
-        if(conexion.responseText == true){
+        if(conexion.responseText.replace(/\ufeff/g, '') == true){
           document.getElementById('textCargado').innerHTML = "ARCHIVOS GENERADOS CORRECTAMENTE";
 
           setTimeout(function(){

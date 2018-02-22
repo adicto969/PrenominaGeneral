@@ -76,7 +76,7 @@ function GPDOM() {
 				conexion.onreadystatechange = function() {
 					if(conexion.readyState == 4 && conexion.status == 200){
 
-						if(conexion.responseText == 1){
+						if(conexion.responseText.replace(/\ufeff/g, '') == 1){
 							document.getElementById('textCargado').innerHTML = "ARCHIVO GENERADO";
 							setTimeout(function() {
 								document.getElementById('textCargado').innerHTML = "Procesando...";
@@ -116,12 +116,12 @@ function cambiarPeriodo() {
       	conexion = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
       	conexion.onreadystatechange = function() {
         if(conexion.readyState == 4 && conexion.status == 200){
-         	if(conexion.responseText == 'Error'){
+         	if(conexion.responseText.replace(/\ufeff/g, '') == 'Error'){
             	document.getElementById('estado_consulta_ajax').innerHTML = '<div style="width: 100%" class="deep-orange accent-4"><h6 class="center-align" style="padding-top: 5px; padding-bottom: 5px; color: white;">No hay fecha de este periodo !</h6></div>';
 
           	} else {
 
-	            var fechaJSON = JSON.parse(conexion.responseText);
+	            var fechaJSON = JSON.parse(conexion.responseText.replace(/\ufeff/g, ''));
 
 	            document.getElementById('fchI').value = fechaJSON.fecha1;
 	            document.getElementById('fchF').value = fechaJSON.fecha2;
@@ -156,7 +156,7 @@ function GenerarExcel(){
     }
   }).done(function(datosC){
     console.log(datosC);
-    if(datosC.replace("\ufeff", "") == '1'){
+    if(datosC.replace(/\ufeff/g, '') == '1'){
         $('#textCargado').html("ARCHIVO GENERADO");
     }else{
         $('#textCargado').html("ERROR AL GENERAR EL ARCHIVO");

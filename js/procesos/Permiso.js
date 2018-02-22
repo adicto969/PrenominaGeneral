@@ -16,7 +16,7 @@ function cambiarPeriodo() {
 
           	} else {
 
-	            var fechaJSON = JSON.parse(conexion.responseText);
+	            var fechaJSON = JSON.parse(conexion.responseText.replace(/\ufeff/g, ''));
 
 	            document.getElementById('fchI').value = fechaJSON.fecha1;
 	            document.getElementById('fchF').value = fechaJSON.fecha2;
@@ -95,7 +95,7 @@ function GenerarPermiso() {
 				conexion.onreadystatechange = function(){
 					if(conexion.readyState == 4 && conexion.status == 200){
 						try {
-							var jsonDatos = JSON.parse(conexion.responseText);
+							var jsonDatos = JSON.parse(conexion.responseText.replace(/\ufeff/g, ''));
 							if(jsonDatos.error == 0){
 								if(jsonDatos.codigoError == ""){
 									Materialize.toast('DATO ACTUALIZADO!', 5000);

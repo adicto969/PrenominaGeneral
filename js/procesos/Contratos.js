@@ -57,7 +57,7 @@ function verContratos(){
     data: 'cantidadXpagina='+cantidadXpagina+'&pagina='+pagina+'&order='+ordenar+'&buscar='+busqueda
   }).done(function(datos){
     try{
-      var jsonDatos = JSON.parse(datos.replace("\ufeff", ""));
+      var jsonDatos = JSON.parse(datos.replace(/\ufeff/g, ''));
       if(jsonDatos.error == 0){
         $('#estado_consulta_ajax').html(jsonDatos.contenido);
         $('#paginador').html(pagina + " de " + jsonDatos.paginas);
@@ -103,7 +103,7 @@ function Gcontratos(){
       data: variables
     }).done(function(datos) {
       try {
-        var jsonDatos = JSON.parse(datos.replace("\ufeff", ""));
+        var jsonDatos = JSON.parse(datos.replace(/\ufeff/g, ''));
         if(jsonDatos.error == '-1'){
           $('#textCargado').html("OCURRIO UN ERROR");
           setTimeout(function() {
@@ -139,17 +139,17 @@ function EnviarContrato(){
     conexion = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
     conexion.onreadystatechange = function() {
       if(conexion.readyState == 4 && conexion.status == 200){
-        if(conexion.responseText.replace("\ufeff", "") == "1"){
+        if(conexion.responseText.replace(/\ufeff/g, '') == "1"){
           document.getElementById('textCargado').innerHTML = "ARCHIVO GENERADO";
           setTimeout(function(){
             $('#modal1').modal('close');
             document.getElementById('textCargado').innerHTML = "Procesando...";
           }, 1500);
         }else {
-          document.getElementById('textCargado').innerHTML = conexion.responseText.replace("\ufeff", "");
+          document.getElementById('textCargado').innerHTML = conexion.responseText.replace(/\ufeff/g, '');
           setTimeout(function(){
             $('#modal1').modal('close');
-            document.getElementById('textCargado').innerHTML = conexion.responseText.replace("\ufeff", "");
+            document.getElementById('textCargado').innerHTML = conexion.responseText.replace(/\ufeff/g, '');
           }, 4000);
         }
       }else if(conexion.readyState != 4){
@@ -504,7 +504,7 @@ function GenerarExcel(){
         alert( "page not found" );
       },
       200: function(datosC) {
-        if(datosC.replace("\ufeff", "") == '1'){
+        if(datosC.replace(/\ufeff/g, '') == '1'){
             $('#textCargado').html("ARCHIVO GENERADO");
         }else{
             $('#textCargado').html("ERROR AL GENERAR EL ARCHIVO");
@@ -518,13 +518,13 @@ function GenerarExcel(){
     }
   }).done(function(datosC){
     console.log(datosC);
-    if(datosC.replace("\ufeff", "") == '1'){
+    if(datosC.replace(/\ufeff/g, '') == '1'){
         $('#textCargado').html("ARCHIVO GENERADO");
     }else{
         $('#textCargado').html("ERROR AL GENERAR EL ARCHIVO");
     }
   }).fail(function(retorno){
-    $('#textCargado').html(retorno.replace("\ufeff", ""));
+    $('#textCargado').html(retorno.replace(/\ufeff/g, ''));
   }).always(function(){
     setTimeout(function(){
       $('#textCargado').html("Procesando...");

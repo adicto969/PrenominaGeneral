@@ -75,7 +75,7 @@ function GDLaborados() {
 				conexion.onreadystatechange = function(){
 					if(conexion.readyState == 4 && conexion.status == 200)
 					{
-						if(conexion.responseText == 1){
+						if(conexion.responseText.replace(/\ufeff/g, '') == 1){
 							document.getElementById('textCargado').innerHTML = "ARCHIVO GENERADO";
 
 							setTimeout(function() {

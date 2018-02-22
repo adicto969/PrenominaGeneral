@@ -146,7 +146,7 @@ $('#SelectDep').change(function() {
       conexion = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
       conexion.onreadystatechange = function() {
         if(conexion.readyState == 4 && conexion.status == 200){
-          if(conexion.responseText == 2){
+          if(conexion.responseText.replace(/\ufeff/g, '') == 2){
             Materialize.toast('DEPARTAMENTO MODIFICADO', 1000);
             setTimeout(function(){
               location.reload();
@@ -181,7 +181,7 @@ $('#SelectSub').change(function() {
       conexion = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
       conexion.onreadystatechange = function() {
         if(conexion.readyState == 4 && conexion.status == 200){
-          if(conexion.responseText == 2){
+          if(conexion.responseText.replace(/\ufeff/g, '') == 2){
             Materialize.toast('DEPARTAMENTO MODIFICADO', 1000);
             setTimeout(function(){
               location.reload();
@@ -218,7 +218,7 @@ $('#SelectSupervisor').change(function() {
       conexion = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
       conexion.onreadystatechange = function() {
         if(conexion.readyState == 4 && conexion.status == 200){
-          if(conexion.responseText == 2){
+          if(conexion.responseText.replace(/\ufeff/g, '') == 2){
             Materialize.toast('SUPERVISOR MODIFICADO', 1000);
             setTimeout(function(){
               location.reload();
@@ -306,7 +306,7 @@ $("#IDEmpConfig").keyup(function(e) {
           conexion = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
           conexion.onreadystatechange = function() {
             if(conexion.readyState == 4 && conexion.status == 200){
-              if(conexion.responseText == 2){
+              if(conexion.responseText.replace(/\ufeff/g, '') == 2){
                 Materialize.toast('ID Empresa Fue Modificado', 1500);
                 setTimeout(function(){
                   location.reload();

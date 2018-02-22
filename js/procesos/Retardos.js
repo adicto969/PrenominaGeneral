@@ -15,7 +15,7 @@ function cambiarPeriodo(){
             document.getElementById('estado_consulta_ajax').innerHTML = '<div style="width: 100%" class="deep-orange accent-4"><h6 class="center-align" style="padding-top: 5px; padding-bottom: 5px; color: white;">No hay fecha de este periodo !</h6></div>';
           } else {
 
-            var fechaJSON = JSON.parse(conexion.responseText.replace("\ufeff", ""));
+            var fechaJSON = JSON.parse(conexion.responseText.replace(/\ufeff/g, ''));
 
             document.getElementById('fchI').value = fechaJSON.fecha1;
             document.getElementById('fchF').value = fechaJSON.fecha2;
@@ -48,7 +48,7 @@ function Retardos() {
 		if(conexion.readyState == 4 && conexion.status == 200)
 		{
 			try {
-				var jsonDatos = JSON.parse(conexion.responseText.replace("\ufeff", ""));
+				var jsonDatos = JSON.parse(conexion.responseText.replace(/\ufeff/g, ''));
 				if(jsonDatos.error == 0){
 					$('#estado_consulta_ajax').html(jsonDatos.contenido);
 					var Dimensiones = AHD();
@@ -95,7 +95,7 @@ function GRetardos()
   {
     if(conexion.readyState == 4 && conexion.status == 200)
     {
-      if(conexion.responseText.replace("\ufeff", "") == 1)
+      if(conexion.responseText.replace(/\ufeff/g, '') == 1)
       {
         document.getElementById('textCargado').innerHTML = "EL ARCHIVO SE HA GENERADO CON EXITO";
 
@@ -105,7 +105,7 @@ function GRetardos()
         }, 1500);
 
       }else {
-        document.getElementById('textCargado').innerHTML = conexion.responseText.replace("\ufeff", "");
+        document.getElementById('textCargado').innerHTML = conexion.responseText.replace(/\ufeff/g, '');
 
         /*setTimeout(function() {
           $("#modal1").modal('close');
@@ -140,14 +140,14 @@ function GenerarExcel(){
       $('#modal1').modal('open');
     }
   }).done(function(datosC){
-    console.log(datosC.replace("\ufeff", ""));
-    if(datosC.replace("\ufeff", "") == '1'){
+    console.log(datosC.replace(/\ufeff/g, ''));
+    if(datosC.replace(/\ufeff/g, '') == '1'){
         $('#textCargado').html("ARCHIVO GENERADO");
     }else{
         $('#textCargado').html("ERROR AL GENERAR EL ARCHIVO");
     }
   }).fail(function(retorno){
-    $('#textCargado').html(retorno.replace("\ufeff", ""));
+    $('#textCargado').html(retorno.replace(/\ufeff/g, ''));
   }).always(function(){
     setTimeout(function(){
       $('#textCargado').html("Procesando...");
@@ -170,7 +170,7 @@ function ActualR(codigo, fecha, fechaO) {
 			data: 'codigo='+codigo+'&fecha='+fecha+'&fechaO='+fechaO+'&valor='+valor+'&tn='+Tn+'&periodo='+periodo
 		}).done(function(datos) {
 			try {
-				var jsonDatos = JSON.parse(datos.replace("\ufeff", ""));
+				var jsonDatos = JSON.parse(datos.replace(/\ufeff/g, ''));
 				if(jsonDatos.error == 0){
 					$('#'+codigo+fecha).css("background-color", "rgb(78, 212, 78)");
 				}else {

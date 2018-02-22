@@ -130,7 +130,7 @@ function cambiarPeriodo(){
 
           } else {
 
-            var fechaJSON = JSON.parse(conexion.responseText);
+            var fechaJSON = JSON.parse(conexion.responseText.replace(/\ufeff/g, ''));
 
             document.getElementById('fchI').value = fechaJSON.fecha1;
             document.getElementById('fchF').value = fechaJSON.fecha2;
@@ -173,7 +173,7 @@ function Checadas(){
           data: variables
         }).done(function(datos) {
           try {
-            var jsonDatos = JSON.parse(datos);
+            var jsonDatos = JSON.parse(datos.replace(/\ufeff/g, ''));
             if(jsonDatos.error == 0){
               $('#estado_consulta_ajax').html(jsonDatos.contenido);
               $('#paginador').html(pagina + " de " + jsonDatos.paginas);
@@ -221,7 +221,7 @@ function Cfausentismo(){
     conexion = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
     conexion.onreadystatechange = function() {
       if(conexion.readyState == 4 && conexion.status == 200){
-        if(conexion.responseText != 1){
+        if(conexion.responseText.replace(/\ufeff/g, '') != 1){
           console.log(conexion.responseText);
         }
       }
@@ -241,7 +241,7 @@ function DLaborados(codigo, fecha, centro, periodo, tn, IDEmp) {
     data: "codigo="+codigo+"&fecha="+fecha+"&centro="+centro+"&periodo="+periodo+"&TN="+tn+"&IDEmp="+IDEmp
   }).done(function(info){
     try {
-        var jsonDatos = JSON.parse(datos);
+        var jsonDatos = JSON.parse(datos.replace(/\ufeff/g, ''));
         if(jsonDatos.error == 1){
           $("#"+codigo+fecha+"DL::before").css("border-right", "2px solid #ff4646");
           $("#"+codigo+fecha+"DL::before").css("border-bottom", "2px solid #ff4646");
@@ -264,7 +264,7 @@ function DobleTurno(codigo, fecha, centro, periodo, tn, IDEmp) {
     data: "codigo="+codigo+"&fecha="+fecha+"&centro="+centro+"&periodo="+periodo+"&TN="+tn+"&IDEmp="+IDEmp
   }).done(function(info){
     try {
-        var jsonDatos = JSON.parse(datos);
+        var jsonDatos = JSON.parse(datos.replace(/\ufeff/g, ''));
         if(jsonDatos.error == 1){
           $("#"+codigo+fecha+"DT::before").css("border-right", "2px solid #ff4646");
           $("#"+codigo+fecha+"DT::before").css("border-bottom", "2px solid #ff4646");
@@ -292,7 +292,7 @@ function GuardarTR(codigo, fecha, fechaO){
       data: "codigo="+codigo+"&valor="+Valor+"&fecha="+fecha+"&fechaO="+fechaO+"&periodo="+periodo+"&tn="+tn
     }).done(function(datos){
       try {
-          var jsonDatos = JSON.parse(datos);
+          var jsonDatos = JSON.parse(datos.replace(/\ufeff/g, ''));
           if(jsonDatos.error == 1){
             $("#"+codigo+fecha).css("background-color", "#ff4646");
           }else {
@@ -415,11 +415,11 @@ function CargDiasANT() {
         conexion = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
         conexion.onreadystatechange = function() {
           if(conexion.readyState == 4 && conexion.status == 200){
-            if(conexion.responseText == 1){
+            if(conexion.responseText.replace(/\ufeff/g, '') == 1){
 
             } else {
 
-              if(conexion.responseText == '<div style="width: 100%" class="deep-orange accent-4"><h6 class="center-align" style="padding-top: 5px; padding-bottom: 5px; color: white;">No se encotro resultado !</h6></div>'){
+              if(conexion.responseText.replace(/\ufeff/g, '') == '<div style="width: 100%" class="deep-orange accent-4"><h6 class="center-align" style="padding-top: 5px; padding-bottom: 5px; color: white;">No se encotro resultado !</h6></div>'){
                 document.getElementById('pie').style.position = 'absolute';
               }else {
                 document.getElementById('pie').style.position = 'inherit';
@@ -461,7 +461,7 @@ function GenerarExcel(){
       $('#modal1').modal('open');
     }
   }).done(function(datosC){
-    datosC = datosC.replace("\ufeff", "");
+    datosC = datosC.replace(/\ufeff/g, '');
     console.log(datosC);
 
     if(datosC == '1'){
@@ -492,7 +492,7 @@ function GpremioPP(codigo) {
       data: "modo=pp&codigo="+codigo+"&valor="+Valor+"&periodo="+periodo+"&tn="+tn+"&pp="+pp
     }).done(function(datos){
       try {
-          var jsonDatos = JSON.parse(datos);
+          var jsonDatos = JSON.parse(datos.replace(/\ufeff/g, ''));
           if(jsonDatos.error == 1){
             $("#pp"+codigo).css("background-color", "#ff4646");
           }else {
@@ -519,7 +519,7 @@ function GpremioPA(codigo) {
       data: "modo=pa&codigo="+codigo+"&valor="+Valor+"&periodo="+periodo+"&tn="+tn+"&pa="+pa
     }).done(function(datos){
       try {
-          var jsonDatos = JSON.parse(datos);
+          var jsonDatos = JSON.parse(datos.replace(/\ufeff/g, ''));
           if(jsonDatos.error == 1){
             $("#pa"+codigo).css("background-color", "#ff4646");
           }else {

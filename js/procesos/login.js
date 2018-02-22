@@ -6,7 +6,7 @@ function Login(){
   conexion = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
   conexion.onreadystatechange = function() {
     if(conexion.readyState == 4 && conexion.status == 200){
-      if(conexion.responseText == 1){
+      if(conexion.responseText.replace(/\ufeff/g, '') == 1){
         window.location="index.php?pagina=Tasistencia.php";
       } else {
         document.getElementById('estado_Login_ajax').innerHTML = conexion.responseText;

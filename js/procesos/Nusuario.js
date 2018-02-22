@@ -33,7 +33,7 @@ function Registro(){
       conexion = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
       conexion.onreadystatechange = function() {
         if(conexion.readyState == 4 && conexion.status == 200){
-          if(conexion.responseText == 1){
+          if(conexion.responseText.replace(/\ufeff/g, '') == 1){
             resultado = '<div class="progress">';
             resultado += '<div class="indeterminate"></div>';
             resultado += '</div>';

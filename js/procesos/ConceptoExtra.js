@@ -50,7 +50,7 @@ function cambiarPeriodo() {
 
           	} else {
 
-	            var fechaJSON = JSON.parse(conexion.responseText);
+	            var fechaJSON = JSON.parse(conexion.responseText.replace(/\ufeff/g, ''));
 
 	            document.getElementById('btnT').disabled  = false;
           	}
@@ -121,7 +121,7 @@ function GenerarExcel(){
 		    }
 		  }).done(function(datosC){
 		    console.log(datosC);
-		    if(datosC.replace("\ufeff", "") == '1'){
+		    if(datosC.replace(/\ufeff/g, '') == '1'){
 		        $('#textCargado').html("ARCHIVO GENERADO");
 		    }else{
 		        $('#textCargado').html("ERROR AL GENERAR EL ARCHIVO");
