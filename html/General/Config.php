@@ -76,7 +76,12 @@ echo '<div class="fixed-action-btn" style="bottom: 24px; right: 24px;">';
 	echo '		<div class="col s12 m4"></div>';
 	echo '		<div class="col s12 m4 input-field">';
 	echo '		<div style="height: 30px;margin-bottom: 10px;"><label>Seleccione Un Supervisor</label></div>';
-	echo '	<select id="SelectSupervisor">';
+	if($_SESSION['Sudo'] == 1){
+		echo '	<select id="SelectSupervisor">';
+	}else {
+		echo '	<select id="SelectSupervisor" disabled="disabled">';
+	}
+	
 	echo '		<option value="0v" disabled="disabled">SUPERVISOR</option>';
 	$queryS = "SELECT supervisor, nombre FROM supervisores WHERE empresa = ".$IDEmpresa;
 	$objBDSQL->consultaBD($queryS);
@@ -84,7 +89,9 @@ echo '<div class="fixed-action-btn" style="bottom: 24px; right: 24px;">';
 		if($datos['supervisor'] == $supervisor){
 			echo '<option value="'.$datos['supervisor'].'" selected>'.utf8_encode($datos['nombre']).'</option>';
 		}else {
-			echo '<option value="'.$datos['supervisor'].'">'.utf8_encode($datos['nombre']).'</option>';
+			if($_SESSION['Sudo'] == 1){
+				echo '<option value="'.$datos['supervisor'].'">'.utf8_encode($datos['nombre']).'</option>';
+			}			
 		}
 	}
 	$objBDSQL->liberarC();

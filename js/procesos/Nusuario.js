@@ -1,11 +1,12 @@
 function Registro(){
-  var conexion, variables, responder, resultado, user, pass, Cpass, Spass, NEmpresa, CDepto, admin, Area;
+  var conexion, variables, responder, resultado, user, pass, Cpass, Spass, NEmpresa, CDepto, CSuper, admin, Area;
   user = document.getElementById('user_reg').value;
   pass = document.getElementById('pass_reg').value;
   Cpass = document.getElementById('Cpass_reg').value;
   Spass = document.getElementById('Spass_reg').value;
   NEmpresa = document.getElementById('empresa_reg').value;
   CDepto = document.getElementById('depto_reg').value;
+  CSuper = document.getElementById('depto_sup').value;
 
   var ech = document.getElementById('admin_reg').checked ? true : false;
   if(ech)
@@ -26,10 +27,10 @@ function Registro(){
   }
   Area = resultado;
 
-  if(user != '' && pass != '' && Cpass != '' && Spass != '' && NEmpresa != '' && CDepto != ''){
+  if(user != '' && pass != '' && Cpass != '' && Spass != '' && NEmpresa != '' && CDepto != '' && CSuper != ''){
 
     if(pass == Cpass){
-      variables = 'user='+user+'&pass='+pass+'&Spass='+Spass+'&NEmpresa='+NEmpresa+'&CDepto='+CDepto+'&admin='+admin+'&Area='+Area;
+      variables = 'user='+user+'&pass='+pass+'&Spass='+Spass+'&NEmpresa='+NEmpresa+'&CDepto='+CDepto+'&CSuper='+CSuper+'&admin='+admin+'&Area='+Area;
       conexion = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
       conexion.onreadystatechange = function() {
         if(conexion.readyState == 4 && conexion.status == 200){
