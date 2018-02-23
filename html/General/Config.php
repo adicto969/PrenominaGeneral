@@ -13,27 +13,35 @@ if($_SESSION['Permiso'] == 1 || $_SESSION['Sudo'] == 1){
 	echo '		<div class="col s12 m4"></div>';
 	echo '		<div class="col s12 m4 input-field">';
 	echo '		<input type="number" id="IDEmpConfig" placeholder="ID EMPRESA" value="'.$IDEmpresa.'" style="width: 100%;">';
-	echo '		<select id="SelectDep">';
-	echo '			<option value="0v">DEPARTAMENTOS</option>';
 
-	$query = "SELECT LTRIM ( RTRIM ( centro ) ) AS centro, nomdepto FROM centros WHERE empresa = '".$IDEmpresa."' and defindpto2 = ".DepNumOrden." ORDER BY nomdepto asc;";
-	$objBDSQL->consultaBD($query);
-	while($datos = $objBDSQL->obtenResult()) {
-		if($centro == $datos["centro"]){
-				echo '<option value="'.$datos["centro"].'" selected>'.$datos["nomdepto"].'</option>';
-		}else {
-				echo '<option value="'.$datos["centro"].'">'.$datos["nomdepto"].'</option>';
+	if($MascaraEm > 0){
+		echo '		<select id="SelectDep">';
+		echo '			<option value="0v">DEPARTAMENTOS</option>';
+
+		$query = "SELECT LTRIM ( RTRIM ( centro ) ) AS centro, nomdepto FROM centros WHERE empresa = '".$IDEmpresa."' and defindpto2 = ".DepNumOrden." ORDER BY nomdepto asc;";
+		$objBDSQL->consultaBD($query);
+		while($datos = $objBDSQL->obtenResult()) {
+			if($centro == $datos["centro"]){
+					echo '<option value="'.$datos["centro"].'" selected>'.$datos["nomdepto"].'</option>';
+			}else {
+					echo '<option value="'.$datos["centro"].'">'.$datos["nomdepto"].'</option>';
+			}
+
 		}
+		$objBDSQL->liberarC();
 
+		echo '		</select>';
 	}
-	$objBDSQL->liberarC();
-
-	echo '		</select>';
 
 	echo '		<select id="SelectSub">';
-	echo '		<option value="0v">SUB-DEPARTAMENTOS</option>';
+	echo '		<option value="0v" disabled="disabled">SUB-DEPARTAMENTOS</option>';
 
-	$query = "SELECT LTRIM ( RTRIM ( centro ) ) AS centro, nomdepto FROM centros WHERE empresa = '".$IDEmpresa."' and defindpto2 <> ".DepNumOrden." ORDER BY nomdepto asc;";
+	if($MascaraEm > 0){
+		$query = "SELECT LTRIM ( RTRIM ( centro ) ) AS centro, nomdepto FROM centros WHERE empresa = '".$IDEmpresa."' and defindpto2 <> ".DepNumOrden." ORDER BY nomdepto asc;";
+	}else {
+		$query = "SELECT LTRIM ( RTRIM ( centro ) ) AS centro, nomdepto FROM centros WHERE empresa = '".$IDEmpresa."' ORDER BY nomdepto asc;";
+	}
+	
 	$objBDSQL->consultaBD($query);
 
 	while($datos = $objBDSQL->obtenResult()) {

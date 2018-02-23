@@ -284,6 +284,12 @@ if($varificarIns == false){
 
 if($DepOsub == 1)
 {
+  if($_SESSION['Sudo'] == 1){
+    $extringExtra = "LEFT (L.centro, ".$MascaraEm.") = LEFT (''".$centro."'', ".$MascaraEm.")";
+  }else {
+    $extringExtra = 'LEFT (L.centro, '.$MascaraEm.') IN (SELECT DISTINCT LEFT (centro, '.$MascaraEm.')  FROM Llaves WHERE supervisor = '.$supervisor.' )';
+  }
+
   $queryGeneral = "
   [dbo].[reporte_checadas_excel_ctro]
   '".$_fecha1."',
@@ -292,7 +298,7 @@ if($DepOsub == 1)
   '".$supervisor."',
   '".$IDEmpresa."',
   '".$_tipoNom."',
-  'LEFT (L.centro, ".$MascaraEm.") = LEFT (''".$centro."'', ".$MascaraEm.")',
+  '$extringExtra',
   '1',
   '".$pagina."',
   '".$cantidadXpagina."',
@@ -302,6 +308,13 @@ if($DepOsub == 1)
   ";
   $ComSql = "LEFT (Centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
 }else {
+  
+  if($_SESSION['Sudo'] == 1){
+    $extringExtra = "L.centro = ''".$centro."''";
+  }else {
+    $extringExtra = 'L.centro IN (SELECT DISTINCT centro FROM Llaves WHERE supervisor = '.$supervisor.' )';
+  }
+
   $queryGeneral = "
   [dbo].[reporte_checadas_excel_ctro]
   '".$_fecha1."',
@@ -310,7 +323,7 @@ if($DepOsub == 1)
   '".$supervisor."',
   '".$IDEmpresa."',
   '".$_tipoNom."',
-  'L.centro = ''".$centro."''',
+  '$extringExtra',
   '0',
   '".$pagina."',
   '".$cantidadXpagina."',
