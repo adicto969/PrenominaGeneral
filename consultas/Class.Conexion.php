@@ -75,7 +75,7 @@ class ConexionSRV
    $result['CODIGO'] = "";
    $result['MENSAJE'] = "";
    $this->consulta = sqlsrv_query($this->enlace, $sentenciaSQL);
-   if($this->consulta === false || empty($this->consulta)) {
+   if($this->consulta === false || empty($this->consulta) || sqlsrv_errors() != null) {
      $result['error'] = 1;
      if(($errors = sqlsrv_errors()) != null){
        $result['error'] = 1;
@@ -84,6 +84,13 @@ class ConexionSRV
          $result['CODIGO'] = "CODIGO: ".$error['code'];
          $result['MENSAJE'] = "MENSAJE: ".$error['message'];
        }
+      $file = fopen("log/log".date("d-m-Y").".txt", "a");
+      fwrite($file, ":::::::::::::::::::::::ERROR SQL:::::::::::::::::::::::".PHP_EOL);
+      fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$result['SQLSTATE'].PHP_EOL);
+      fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$result['CODIGO'].PHP_EOL);
+      fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$result['MENSAJE'].PHP_EOL);
+      fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - CONSULTA: '.$sentenciaSQL.PHP_EOL);
+      fclose($file);
      }
    }
    return $result;
@@ -97,7 +104,7 @@ class ConexionSRV
    $result['MENSAJE'] = "";
    $this->consulta2 = sqlsrv_query($this->enlace, $sentenciaSQL);
 
-   if($this->consulta2 === false || empty($this->consulta2)) {
+   if($this->consulta2 === false || empty($this->consulta2) || sqlsrv_errors() != null) {
      $result['error'] = 1;
      if(($errors = sqlsrv_errors()) != null){
        $result['error'] = 1;
@@ -106,6 +113,13 @@ class ConexionSRV
          $result['CODIGO'] = "CODIGO: ".$error['code'];
          $result['MENSAJE'] = "MENSAJE: ".$error['message'];
        }
+       $file = fopen("log/log".date("d-m-Y").".txt", "a");
+      fwrite($file, ":::::::::::::::::::::::ERROR SQL:::::::::::::::::::::::".PHP_EOL);
+      fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$result['SQLSTATE'].PHP_EOL);
+      fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$result['CODIGO'].PHP_EOL);
+      fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$result['MENSAJE'].PHP_EOL);
+      fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - CONSULTA: '.$sentenciaSQL.PHP_EOL);
+      fclose($file);
      }
    }
    return $result;
@@ -120,16 +134,82 @@ class ConexionSRV
  }
 
  public function obtenResult(){
+  $result = array();
+  $result['error'] = 0;
+  $result['SQLSTATE'] = "";
+  $result['CODIGO'] = "";
+  $result['MENSAJE'] = "";
+  if($this->consulta === false || empty($this->consulta) || sqlsrv_errors() != null) {
+    $result['error'] = 1;
+    if(($errors = sqlsrv_errors()) != null){
+      $result['error'] = 1;
+      foreach ($errors as $error) {
+        $result['SQLSTATE'] = "SQLSTATE: ".$error['SQLSTATE'];
+        $result['CODIGO'] = "CODIGO: ".$error['code'];
+        $result['MENSAJE'] = "MENSAJE: ".$error['message'];
+      }
+      $file = fopen("log/log".date("d-m-Y").".txt", "a");
+      fwrite($file, ":::::::::::::::::::::::ERROR SQL:::::::::::::::::::::::".PHP_EOL);
+      fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$result['SQLSTATE'].PHP_EOL);
+      fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$result['CODIGO'].PHP_EOL);
+      fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$result['MENSAJE'].PHP_EOL);      
+      fclose($file);
+    }
+  }
    $this->resultado=sqlsrv_fetch_array($this->consulta, SQLSRV_FETCH_ASSOC);
    return $this->resultado;
  }
 
  public function obtenResultNum(){
+  $result = array();
+  $result['error'] = 0;
+  $result['SQLSTATE'] = "";
+  $result['CODIGO'] = "";
+  $result['MENSAJE'] = "";
+  if($this->consulta === false || empty($this->consulta) || sqlsrv_errors() != null) {
+    $result['error'] = 1;
+    if(($errors = sqlsrv_errors()) != null){
+      $result['error'] = 1;
+      foreach ($errors as $error) {
+        $result['SQLSTATE'] = "SQLSTATE: ".$error['SQLSTATE'];
+        $result['CODIGO'] = "CODIGO: ".$error['code'];
+        $result['MENSAJE'] = "MENSAJE: ".$error['message'];
+      }
+      $file = fopen("log/log".date("d-m-Y").".txt", "a");
+      fwrite($file, ":::::::::::::::::::::::ERROR SQL:::::::::::::::::::::::".PHP_EOL);
+      fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$result['SQLSTATE'].PHP_EOL);
+      fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$result['CODIGO'].PHP_EOL);
+      fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$result['MENSAJE'].PHP_EOL);      
+      fclose($file);
+    }
+  }
    $this->resultado=sqlsrv_fetch_array($this->consulta, SQLSRV_FETCH_NUMERIC);
    return $this->resultado;
  }
 
  public function obtenResult2(){
+  $result = array();
+  $result['error'] = 0;
+  $result['SQLSTATE'] = "";
+  $result['CODIGO'] = "";
+  $result['MENSAJE'] = "";
+  if($this->consulta2 === false || empty($this->consulta2) || sqlsrv_errors() != null) {
+    $result['error'] = 1;
+    if(($errors = sqlsrv_errors()) != null){
+      $result['error'] = 1;
+      foreach ($errors as $error) {
+        $result['SQLSTATE'] = "SQLSTATE: ".$error['SQLSTATE'];
+        $result['CODIGO'] = "CODIGO: ".$error['code'];
+        $result['MENSAJE'] = "MENSAJE: ".$error['message'];
+      }
+      $file = fopen("log/log".date("d-m-Y").".txt", "a");
+      fwrite($file, ":::::::::::::::::::::::ERROR SQL:::::::::::::::::::::::".PHP_EOL);
+      fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$result['SQLSTATE'].PHP_EOL);
+      fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$result['CODIGO'].PHP_EOL);
+      fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$result['MENSAJE'].PHP_EOL);      
+      fclose($file);
+    }
+  }
    $this->resultado2=sqlsrv_fetch_array($this->consulta2, SQLSRV_FETCH_ASSOC);
    return $this->resultado2;
  }
@@ -142,7 +222,7 @@ class ConexionSRV
    $result['SQLSTATE'] = "";
    $result['CODIGO'] = "";
    $result['MENSAJE'] = "";
-   if($param === false) {
+   if($param === false || sqlsrv_errors() != null) {
      $result['error'] = 1;
      if(($errors = sqlsrv_errors()) != null){
        $result['error'] = 1;
@@ -151,6 +231,13 @@ class ConexionSRV
          $result['CODIGO'] = "CODIGO: ".$error['code'];
          $result['MENSAJE'] = "MENSAJE: ".$error['message'];
        }
+       $file = fopen("log/log".date("d-m-Y").".txt", "a");
+      fwrite($file, ":::::::::::::::::::::::ERROR SQL:::::::::::::::::::::::".PHP_EOL);
+      fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$result['SQLSTATE'].PHP_EOL);
+      fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$result['CODIGO'].PHP_EOL);
+      fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$result['MENSAJE'].PHP_EOL);     
+      fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - CONSULTA: '.$sentenciaSQL.PHP_EOL); 
+      fclose($file);
        return $result;
      }
    }else {

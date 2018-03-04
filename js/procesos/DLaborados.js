@@ -7,16 +7,18 @@ $( function() {
 } );
 
 function DLaborados() {
-	var conexion, variables, fecha, Tn, Dep, resultado;
+	var conexion, variables, fecha, Tn, Dep, resultado, BUSCAR;
 	fecha = document.getElementById('fch').value;
 	Tn = document.getElementById('tiponom').value;
 	Dep = document.getElementById('Dep').value;
+	BUSCAR = document.getElementById('CE').value;
+
 
 	if(fecha != ''){
 		if(Tn != '' && Tn > 0 && Tn <= 6){
 			if(Dep != ''){
 
-				variables = "fcH="+fecha+"&Tn="+Tn+"&Dep="+Dep;
+				variables = "fcH="+fecha+"&Tn="+Tn+"&Dep="+Dep+"&BUS="+BUSCAR;
 				conexion = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
 				conexion.onreadystatechange = function(){
 					if(conexion.readyState == 4 && conexion.status == 200){

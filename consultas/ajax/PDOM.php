@@ -10,6 +10,8 @@ $bdM->__constructM();
 $Periodo = $_POST['periodo'];
 $Tn = $_POST['Tn'];
 $Dep = $_POST['Dep'];
+$CE = $_POST['CE'];
+
 
 if($Periodo <= 24){
 $_fechas = periodo($Periodo, $Tn);
@@ -186,15 +188,22 @@ if($DepOsub == 1)
   $ComSql3 = "centro = '".$Dep."'";
 }
 
+$whereCE = "";
+if(!empty($CE)){
+  $whereCE = "(relch_registro.codigo LIKE '%".$CE."%' OR 
+              empleados.ap_paterno+' '+empleados.ap_materno+' '+empleados.nombre LIKE '%".$CE."%' OR 
+              tabulador.actividad LIKE '%".$CE."%') and ";
+}
+
 if($Dep == "TODOS" || $Dep == "TODO" || $Dep == "todos" || $Dep == "todo"){
 
 	$query = "
         select relch_registro.codigo AS CODIGO,
-        empleados.ap_paterno+' '+empleados.ap_materno+' '+empleados.nombre AS NOMBRE,
+        MAX(empleados.ap_paterno+' '+empleados.ap_materno+' '+empleados.nombre) AS NOMBRE,
         tabulador.actividad AS ACTIVIDAD,
         CONVERT(varchar(10), relch_registro.fecha, 103) AS FECHA,
-        relch_registro.num_conc AS NUM_CONC,
-        empleados.sueldo * '.25' as PDOM
+        '9' AS NUM_CONC,
+        MAX(CONVERT( DECIMAL(10, 2), (empleados.sueldo * '.25'))) as PDOM
 
         from relch_registro
 
@@ -204,9 +213,11 @@ if($Dep == "TODOS" || $Dep == "TODO" || $Dep == "todos" || $Dep == "todo"){
 
         where relch_registro.empresa = '".$IDEmpresa."' and
         empleados.activo = 'S' and
-        ".$comSql."
-        relch_registro.num_conc = 9 and
-        relch_registro.tiponom = '".$Tn."'
+        relch_registro.fecha BETWEEN '".$fecha1."' AND '".$fecha2."' and
+        (LOWER(DATENAME(dw, relch_registro.fecha)) = 'sunday' OR LOWER(DATENAME(dw, relch_registro.fecha)) = 'domingo') and
+        ".$whereCE."
+        relch_registro.tiponom = '".$Tn."'        
+        group by fecha, relch_registro.codigo, ACTIVIDAD, relch_registro.centro
         order by relch_registro.centro
         ";
 
@@ -214,11 +225,11 @@ if($Dep == "TODOS" || $Dep == "TODO" || $Dep == "todos" || $Dep == "todo"){
 
 	$query = "
         select relch_registro.codigo AS CODIGO,
-        empleados.ap_paterno+' '+empleados.ap_materno+' '+empleados.nombre AS NOMBRE,
+        MAX(empleados.ap_paterno+' '+empleados.ap_materno+' '+empleados.nombre) AS NOMBRE,
         tabulador.actividad AS ACTIVIDAD,
         CONVERT(varchar(10), relch_registro.fecha, 103) AS FECHA,
-        relch_registro.num_conc AS NUM_CONC,
-        empleados.sueldo * '.25' as PDOM
+        '9' AS NUM_CONC,
+        MAX(CONVERT( DECIMAL(10, 2), (empleados.sueldo * '.25'))) as PDOM
 
         from relch_registro
 
@@ -228,15 +239,16 @@ if($Dep == "TODOS" || $Dep == "TODO" || $Dep == "todos" || $Dep == "todo"){
 
         where relch_registro.empresa = '".$IDEmpresa."' and
         empleados.activo = 'S' and
-        ".$comSql."
-        relch_registro.num_conc = 9 and
+        relch_registro.fecha BETWEEN '".$fecha1."' AND '".$fecha2."' and
+        (LOWER(DATENAME(dw, relch_registro.fecha)) = 'sunday' OR LOWER(DATENAME(dw, relch_registro.fecha)) = 'domingo') and
+        ".$whereCE."
         relch_registro.tiponom = '".$Tn."' and
         ".$ComSql2."
+        group by fecha, relch_registro.codigo, ACTIVIDAD
         order by relch_registro.codigo asc
         ";
 
 }
-
 
 $numC = $objBDSQL->obtenfilas($query);
 
@@ -266,8 +278,8 @@ if($numC > 0){
 		echo '
 			<tr>
 				<td>'.$row["CODIGO"].'</td>
-				<td>'.utf8_decode($row["NOMBRE"]).'</td>
-				<td>'.$row["ACTIVIDAD"].'</td>
+				<td>'.utf8_encode($row["NOMBRE"]).'</td>
+				<td>'.utf8_encode($row["ACTIVIDAD"]).'</td>
 				<td>'.$row["FECHA"].'</td>
 				<td>'.$row["NUM_CONC"].'</td>
 				<td>'.truncateFloat($row["PDOM"], 2).'</td>
@@ -284,7 +296,7 @@ if($numC > 0){
 		}
 
 		echo '
-				<td><p style="text-align: center;"><input type="checkbox" name="'.$row["CODIGO"].$lr.'" value="'.$row["CODIGO"].$lr.'" '.$c1.' id="'.$row["CODIGO"].$lr.'"><label for="'.$row["CODIGO"].$lr.'"></label></p></td>
+				<td><p style="text-align: center;"><input type="checkbox" name="'.$row["CODIGO"].str_replace("/", "", $row["FECHA"]).'" value="'.$row["CODIGO"].str_replace("/", "", $row["FECHA"]).'" '.$c1.' id="'.$row["CODIGO"].str_replace("/", "", $row["FECHA"]).'"><label for="'.$row["CODIGO"].str_replace("/", "", $row["FECHA"]).'"></label></p></td>
 			</tr>
 		';
 

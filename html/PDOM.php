@@ -101,11 +101,16 @@ $objBDSQL->cerrarBD();
 	            <input id="tiponom" type="number" min="1" max="6" name="tiponom" value="<?php echo $TN; ?>" style="margin-left: 52px; width: 142px; font-size: 1rem; height: 1.5rem;">
 	            <br/>
                 <label for="Dep">Departamento</label>
-                <input id="Dep" type="text" name="Dep" value="<?php echo $centro; ?>" style="margin-left: 57px; width: 142px; font-size: 1rem; height: 1.5rem;">
-                <br/>
+                <input id="Dep" type="text" name="Dep" value="<?php echo $centro; ?>" style="margin-left: 59px; width: 142px; font-size: 1rem; height: 1.5rem;">				
+				<br/>
+                <div class="input-field col s6" style="max-width: 211px;margin-left: 20px;">
+					<input id="CE" type="text" class="validate" style="width: 164px; padding-top: 5px">
+					<i class="material-icons prefix" onclick="PDOM()" style="line-height: 39px;text-align: center;border: 1px solid rgba(0, 0, 0, .2);cursor:pointer;">search</i>
+				</div>
+				<br/>
 	            <div class="boton col s12 center-align" style="margin-top: 50px; margin-bottom: 50px;">
 	                <input class="btn" type="submit" value="BUSCAR" onclick="PDOM()" id="btnT"/>
-									<button type="button" name="button" class="btn" onclick="GenerarExcel()">EXCEL</button>
+					<button type="button" name="button" class="btn" onclick="GenerarExcel()">EXCEL</button>
 	            </div>
 	            <br/>
 	            <br/>

@@ -22,7 +22,12 @@ $busquedaV = "";
 
 if($DepOsub == 1)
 {
-  $ComSql = "LEFT (L.centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
+  if($_SESSION['Sudo'] == 1){
+    $ComSql = "LEFT (L.centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
+  }else {
+
+  }
+  
   $ComSql2 = "LEFT (centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
 }else {
   $ComSql = "L.centro = '".$centro."'";

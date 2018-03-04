@@ -682,7 +682,10 @@ while ($row=$objBDSQL->obtenResult()) {
 
     }
     $sumaDias=0;
-    if($row['Tpo'] == "E"){
+    /**
+     * Columna de PP y PA
+     */
+    /*if($row['Tpo'] == "E"){
       $tmp_PPC = "";
       $tmp_PAC = "";
       $tmp_APPC = "";
@@ -706,16 +709,20 @@ while ($row=$objBDSQL->obtenResult()) {
       }else {
         $_cuerpo .= '<td class="Aline"></td>';
       }
-    }else {
+    }else {*/
       $_cuerpo .= '<td class="Aline"></td>';
       $_cuerpo .= '<td class="Aline"></td>';
-    }
+    //}
 
     $_nResultados++;
     $_cuerpo .= '<td></td></tr>';
 }
 
-$_cabecera .= "<th>P.P</th><th>P.A</th><th>Firma</th></tr>";
+/**
+ * cabecera para PA y PP
+ */
+//$_cabecera .= "<th>P.P</th><th>P.A</th><th>Firma</th></tr>";
+$_cabecera .= "<th colspan='3'>Firma</th></tr>";
 $_cabeceraD .= "</tr>";
 
 if(strlen($_cabeceraD) == 148){

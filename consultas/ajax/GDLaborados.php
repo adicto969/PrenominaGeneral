@@ -48,7 +48,7 @@ if($Dep == "TODO" || $Dep == "TODOS" || $Dep == "todo" || $Dep == "todos")
         convert (varchar(10), relch_registro.fecha, 103) as Fecha,
         relch_registro.num_conc,
         '8' as Horas,
-        empleados.sueldo * '2'  as Importe
+        CONVERT( DECIMAL(10, 2), (empleados.sueldo * '2'))  as Importe
 
         from relch_registro
 
@@ -79,7 +79,7 @@ if($Dep == "TODO" || $Dep == "TODOS" || $Dep == "todo" || $Dep == "todos")
         convert (varchar(10), relch_registro.fecha, 103) as Fecha,
         relch_registro.num_conc,
         '8' as Horas,
-        empleados.sueldo * '2'  as Importe
+        CONVERT( DECIMAL(10, 2), (empleados.sueldo * '2'))  as Importe
 
         from relch_registro
 
@@ -116,7 +116,7 @@ $objBDSQL->consultaBD($query);
 while ($row = $objBDSQL->obtenResult())
 {
 	$lr++;
-	$pst = $row["codigo"].$lr;
+	$pst = $row["codigo"].str_replace("/", "", $row["Fecha"]);
 
 
 	if ( isset( $_POST[$pst] ) )

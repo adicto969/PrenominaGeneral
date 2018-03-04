@@ -12,6 +12,8 @@ $bdM->__constructM();
 $Fch = $_POST['fcH'];
 $Tn = $_POST['Tn'];
 $Dep = $_POST['Dep'];
+$BUS = $_POST['BUS'];
+
 
 list($dia, $mes, $ayo) = explode('/', $Fch);
 $Fch = $ayo.$mes.$dia;
@@ -25,6 +27,13 @@ if($DepOsub == 1)
 	$ComSql2 = "centro = '".$centro."'";
 }
 
+$whereBUS = "";
+if(!empty($BUS)){
+	$whereBUS = "(relch_registro.codigo LIKE '%".$BUS."%' OR 
+              empleados.ap_paterno+' '+empleados.ap_materno+' '+empleados.nombre LIKE '%".$BUS."%' OR 
+              tabulador.actividad LIKE '%".$BUS."%') and ";
+}
+
 if($Dep == "todos" || $Dep == "todo" || $Dep == "TODOS" || $Dep == "TODO"){
 
 	$query = "
@@ -35,7 +44,7 @@ if($Dep == "todos" || $Dep == "todo" || $Dep == "TODOS" || $Dep == "TODO"){
         convert (varchar(10), relch_registro.fecha, 103) as Fecha,
         relch_registro.num_conc,
         '8' as Horas,
-        empleados.sueldo * '2'  as Importe
+        CONVERT( DECIMAL(10, 2), (empleados.sueldo * '2'))  as Importe
 
         from relch_registro
 
@@ -46,7 +55,8 @@ if($Dep == "todos" || $Dep == "todo" || $Dep == "TODOS" || $Dep == "TODO"){
         where relch_registro.empresa =  '".$IDEmpresa."' and
         empleados.activo = 'S' and
         relch_registro.fecha = '".$Fch."'  and
-        relch_registro.num_conc = 10 and
+		relch_registro.num_conc = 10 and
+		".$whereBUS."
         relch_registro.tiponom = '".$Tn."'
         group by relch_registro.codigo, empleados.ap_paterno, empleados.ap_materno,
 			empleados.nombre, tabulador.actividad, empleados.sueldo, relch_registro.fecha,
@@ -65,7 +75,7 @@ if($Dep == "todos" || $Dep == "todo" || $Dep == "TODOS" || $Dep == "TODO"){
         convert (varchar(10), relch_registro.fecha, 103) as Fecha,
         relch_registro.num_conc,
         '8' as Horas,
-        empleados.sueldo * '2'  as Importe
+        CONVERT( DECIMAL(10, 2), (empleados.sueldo * '2'))  as Importe
 
         from relch_registro
 
@@ -76,7 +86,8 @@ if($Dep == "todos" || $Dep == "todo" || $Dep == "TODOS" || $Dep == "TODO"){
         where relch_registro.empresa =  '".$IDEmpresa."' and
         empleados.activo = 'S' and
         relch_registro.fecha = '".$Fch."'  and
-        relch_registro.num_conc = 10 and	
+		relch_registro.num_conc = 10 and
+		".$whereBUS."
         relch_registro.tiponom = '".$Tn."' and
         ".$ComSql."
         group by relch_registro.codigo, empleados.ap_paterno, empleados.ap_materno,
@@ -121,8 +132,8 @@ if($numC > 0){
 		echo '
 			<tr>
 				<td>'.$row["codigo"].'</td>
-				<td>'.utf8_decode($row["nombre"]).'</td>
-				<td>'.$row["actividad"].'</td>
+				<td>'.utf8_encode($row["nombre"]).'</td>
+				<td>'.utf8_encode($row["actividad"]).'</td>
 				<td>'.$row["sueldo"].'</td>
 				<td>'.$row["Fecha"].'</td>
 				<td>'.$row["num_conc"].'</td>
@@ -141,7 +152,7 @@ if($numC > 0){
 		}
 
 		echo '
-				<td><p style="text-align: center;"><input type="checkbox" name="'.$row["codigo"].$lr.'" value="'.$row["codigo"].$lr.'" '.$c1.' id="'.$row["codigo"].$lr.'"><label for="'.$row["codigo"].$lr.'"></label></p></td>
+				<td><p style="text-align: center;"><input type="checkbox" name="'.$row["codigo"].str_replace("/", "", $row["Fecha"]).'" value="'.$row["codigo"].str_replace("/", "", $row["Fecha"]).'" '.$c1.' id="'.$row["codigo"].str_replace("/", "", $row["Fecha"]).'"><label for="'.$row["codigo"].str_replace("/", "", $row["Fecha"]).'"></label></p></td>
 			</tr>
 		';
 

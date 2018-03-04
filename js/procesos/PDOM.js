@@ -9,12 +9,13 @@ function PDOM(){
 	Pc = document.getElementById('periodo').value;
 	Tn = document.getElementById('tiponom').value;
 	Dep = document.getElementById('Dep').value;
+	CE = document.getElementById("CE").value;
 
 	if(Pc != ''){
 		if(Tn != ''){
 			if(Dep != ''){
 
-				variables += "&periodo="+Pc+"&Tn="+Tn+"&Dep="+Dep;
+				variables += "&periodo="+Pc+"&Tn="+Tn+"&Dep="+Dep+"&CE="+CE;
 				conexion = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
 				conexion.onreadystatechange = function(){
 					if(conexion.readyState == 4 && conexion.status == 200){

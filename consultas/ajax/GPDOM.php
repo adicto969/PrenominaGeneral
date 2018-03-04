@@ -195,11 +195,11 @@ if($Dep == "TODOS" || $Dep == "TODO" || $Dep == "todos" || $Dep == "todo"){
 
 	$query = "
         select relch_registro.codigo AS CODIGO,
-        empleados.ap_paterno+' '+empleados.ap_materno+' '+empleados.nombre AS NOMBRE,
+        MAX(empleados.ap_paterno+' '+empleados.ap_materno+' '+empleados.nombre) AS NOMBRE,
         tabulador.actividad AS ACTIVIDAD,
         CONVERT(varchar(10), relch_registro.fecha, 103) AS FECHA,
-        relch_registro.num_conc AS NUM_CONC,
-        empleados.sueldo * '.25' as PDOM
+        '9' AS NUM_CONC,
+        MAX(CONVERT( DECIMAL(10, 2), (empleados.sueldo * '.25'))) as PDOM
 
         from relch_registro
 
@@ -209,9 +209,10 @@ if($Dep == "TODOS" || $Dep == "TODO" || $Dep == "todos" || $Dep == "todo"){
 
         where relch_registro.empresa = '".$IDEmpresa."' and
         empleados.activo = 'S' and
-        ".$comSql."
-        relch_registro.num_conc = 9 and
-        relch_registro.tiponom = '".$Tn."'
+        relch_registro.fecha BETWEEN '".$fecha1."' AND '".$fecha2."' and
+        (LOWER(DATENAME(dw, relch_registro.fecha)) = 'sunday' OR LOWER(DATENAME(dw, relch_registro.fecha)) = 'domingo') and        
+        relch_registro.tiponom = '".$Tn."'        
+        group by fecha, relch_registro.codigo, ACTIVIDAD, relch_registro.centro
         order by relch_registro.centro
         ";
 
@@ -219,11 +220,11 @@ if($Dep == "TODOS" || $Dep == "TODO" || $Dep == "todos" || $Dep == "todo"){
 
 	$query = "
         select relch_registro.codigo AS CODIGO,
-        empleados.ap_paterno+' '+empleados.ap_materno+' '+empleados.nombre AS NOMBRE,
+        MAX(empleados.ap_paterno+' '+empleados.ap_materno+' '+empleados.nombre) AS NOMBRE,
         tabulador.actividad AS ACTIVIDAD,
         CONVERT(varchar(10), relch_registro.fecha, 103) AS FECHA,
-        relch_registro.num_conc AS NUM_CONC,
-        empleados.sueldo * '.25' as PDOM
+        '9' AS NUM_CONC,
+        MAX(CONVERT( DECIMAL(10, 2), (empleados.sueldo * '.25'))) as PDOM
 
         from relch_registro
 
@@ -233,10 +234,11 @@ if($Dep == "TODOS" || $Dep == "TODO" || $Dep == "todos" || $Dep == "todo"){
 
         where relch_registro.empresa = '".$IDEmpresa."' and
         empleados.activo = 'S' and
-        ".$comSql."
-        relch_registro.num_conc = 9 and
+        relch_registro.fecha BETWEEN '".$fecha1."' AND '".$fecha2."' and
+        (LOWER(DATENAME(dw, relch_registro.fecha)) = 'sunday' OR LOWER(DATENAME(dw, relch_registro.fecha)) = 'domingo') and        
         relch_registro.tiponom = '".$Tn."' and
         ".$comSql2."
+        group by fecha, relch_registro.codigo, ACTIVIDAD
         order by relch_registro.codigo asc
         ";
 
@@ -255,7 +257,7 @@ $objBDSQL->consultaBD($query);
 while ($row = $objBDSQL->obtenResult())
 {
 	$lr++;
-	$pst = $row["CODIGO"].$lr;
+	$pst = $row["CODIGO"].str_replace("/", "", $row["FECHA"]);
 
 
 	if ( isset( $_POST[$pst] ) )

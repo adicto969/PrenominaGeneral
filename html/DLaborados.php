@@ -11,9 +11,14 @@
 	            <label for="tiponom">Tipo de nomina</label>
 	            <input id="tiponom" type="number" min="1" max="6" name="tiponom" value="<?php echo $TN; ?>" style="margin-left: 19px; width: 142px; font-size: 1rem; height: 1.5rem;">
 	            <br/>
-                <label for="Dep">Departamento</label>
-                <input id="Dep" type="text" name="Dep" value="<?php echo $centro; ?>" style="margin-left: 24px; width: 142px; font-size: 1rem; height: 1.5rem;">
-                <br/>
+              <label for="Dep">Departamento</label>
+              <input id="Dep" type="text" name="Dep" value="<?php echo $centro; ?>" style="margin-left: 24px; width: 142px; font-size: 1rem; height: 1.5rem;">
+							<br/>
+              <div class="input-field col s6" style="max-width: 211px;margin-left: 20px;">
+								<input id="CE" type="text" class="validate" style="width: 164px; padding-top: 5px">
+								<i class="material-icons prefix" onclick="DLaborados()" style="line-height: 39px;text-align: center;border: 1px solid rgba(0, 0, 0, .2);cursor:pointer;">search</i>
+							</div>
+              <br/>
 	            <div class="boton col s12 center-align" style="margin-top: 20px; margin-bottom: 50px;">
 	                <input class="btn" type="submit" value="BUSCAR" onclick="DLaborados()" id="btnT"/>
 	            </div>
