@@ -1,9 +1,10 @@
 $(document).ready(function() {
 	DLaborados();
+	cargarFechas();
 });
 
 $( function() {
-	$( "#fch" ).datepicker();
+	$( ".Calend" ).datepicker();
 } );
 
 function DLaborados() {
@@ -112,3 +113,63 @@ function GDLaborados() {
 		Materialize.toast('Ingrese Una Fecha', 3000);
 	}
 }
+
+function cargarFechas() {
+	$.ajax({
+		url: 'fechasFestivas.json',
+		type: 'POST',
+		dataType: 'JSON',
+		success: function(data) {						
+			var infodata = "<input type='hidden' name='cantidadJ' value='"+data.fechas.length+"'/><thead><tr><th>Activo</th><th>Fecha</th><th></th></tr></thead><tbody>";
+			for(var x = 0; x <= data.fechas.length-1; x++)
+			{
+				if(data.fechas[x].estatus == 1){
+					infodata += "<tr><td><p style='margin: 0;padding: 0;text-align: center;'>";
+					infodata += "<input type='radio' name='fecha' id='"+data.fechas[x].value+"' value='"+data.fechas[x].value+"'>";
+					infodata += "<label for='"+data.fechas[x].value+"'></label>";
+                	infodata += "</td><td>"+data.fechas[x].fecha+"</td>";
+                	infodata += '<td><span style="background-color: red;padding: 2px 6px;border-radius: 50%;color: white;cursor: pointer;" onclick="eliminarFecha(&#39;'+data.fechas[x].value+'&#39;)">X</span></td></tr>';
+				}			
+			}
+			infodata += "<tr><td></td><td><input type='text' class='Calend' name='fechaA' id='fechaA'></td><td></td></tr></tbody><input type='hidden' name='opcion' value='nuevo'/> ";
+			$("#Tfechas").html(infodata);
+			$( ".Calend" ).datepicker();
+
+			$('input[type=radio][name=fecha]').change(function() {
+				var date = new Date();
+				var year = date.getFullYear();
+				$('#fch').val(this.value.substr(0, 2)+"/"+this.value.substr(2, 2)+"/"+year);
+				DLaborados();
+			});
+		}
+	});
+}
+
+function eliminarFecha(codigo)
+{
+	var modo = "eliminar";
+	var value = codigo;
+	var cantidad = $('input[name=cantidadJ]').val();
+	$.ajax({
+		url: "fechasF.php",
+		method: "POST",
+		data: "value="+codigo+"&opcion="+modo+"&cantidad="+cantidad+"&fecha="+value
+	}).done(function() {
+		cargarFechas();
+	});
+}
+
+function agregarFecha()
+{	
+	var modo = "nuevo";	
+	var value = $('#fechaA').val();
+	var cantidad = $('input[name=cantidadJ]').val();
+	$.ajax({
+		url: "fechasF.php",
+		method: "POST",
+		data: "value="+value+"&opcion="+modo+"&cantidad="+cantidad+"&fecha="+value
+	}).done(function() {
+		cargarFechas();
+	});
+}
+

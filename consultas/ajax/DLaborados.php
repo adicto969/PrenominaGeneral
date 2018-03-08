@@ -35,14 +35,14 @@ if(!empty($BUS)){
 }
 
 if($Dep == "todos" || $Dep == "todo" || $Dep == "TODOS" || $Dep == "TODO"){
-
+	//relch_registro.num_conc,
 	$query = "
 		select DISTINCT relch_registro.codigo,
         empleados.ap_paterno+' '+empleados.ap_materno+' '+empleados.nombre AS nombre,
         tabulador.actividad,
         empleados.sueldo,
         convert (varchar(10), relch_registro.fecha, 103) as Fecha,
-        relch_registro.num_conc,
+        '10' as num_conc,
         '8' as Horas,
         CONVERT( DECIMAL(10, 2), (empleados.sueldo * '2'))  as Importe
 
@@ -54,18 +54,17 @@ if($Dep == "todos" || $Dep == "todo" || $Dep == "TODOS" || $Dep == "TODO"){
 
         where relch_registro.empresa =  '".$IDEmpresa."' and
         empleados.activo = 'S' and
-        relch_registro.fecha = '".$Fch."'  and
-		relch_registro.num_conc = 10 and
+        relch_registro.fecha = '".$Fch."'  and		
 		".$whereBUS."
         relch_registro.tiponom = '".$Tn."'
         group by relch_registro.codigo, empleados.ap_paterno, empleados.ap_materno,
 			empleados.nombre, tabulador.actividad, empleados.sueldo, relch_registro.fecha,
 			relch_registro.num_conc, relch_registro.centro
         order by tabulador.actividad
-
 	";
+	//relch_registro.num_conc = 10 and
 }else {
-
+	//relch_registro.num_conc
 	$query = "
 
 		select DISTINCT relch_registro.codigo,
@@ -73,7 +72,7 @@ if($Dep == "todos" || $Dep == "todo" || $Dep == "TODOS" || $Dep == "TODO"){
         tabulador.actividad,
         empleados.sueldo,
         convert (varchar(10), relch_registro.fecha, 103) as Fecha,
-        relch_registro.num_conc,
+        '10' as num_conc,
         '8' as Horas,
         CONVERT( DECIMAL(10, 2), (empleados.sueldo * '2'))  as Importe
 
@@ -85,8 +84,7 @@ if($Dep == "todos" || $Dep == "todo" || $Dep == "TODOS" || $Dep == "TODO"){
 
         where relch_registro.empresa =  '".$IDEmpresa."' and
         empleados.activo = 'S' and
-        relch_registro.fecha = '".$Fch."'  and
-		relch_registro.num_conc = 10 and
+        relch_registro.fecha = '".$Fch."'  and		
 		".$whereBUS."
         relch_registro.tiponom = '".$Tn."' and
         ".$ComSql."
@@ -94,9 +92,8 @@ if($Dep == "todos" || $Dep == "todo" || $Dep == "TODOS" || $Dep == "TODO"){
 			empleados.nombre, tabulador.actividad, empleados.sueldo, relch_registro.fecha,
 			relch_registro.num_conc, relch_registro.centro
         order by relch_registro.codigo asc
-
-
 	";
+	//relch_registro.num_conc = 10 and
 
 }
 

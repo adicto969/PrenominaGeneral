@@ -332,6 +332,32 @@ if($DepOsub == 1)
   '".$ordernar."'";
   $ComSql = "Centro = '".$centro."'";
 }
+/////////////GENERAR EoS DE LAS CHECADAS///////////
+$_EoS = "[dbo].[ModificaRelojEos] '".$IDEmpresa."', '".$_fecha1."', '".$_fecha2."'";
+try{
+  $eOs = $objBDSQL2->consultaBD2($_EoS);
+
+  if($eOs['error'] == 1){
+    $file = fopen("log/log".date("d-m-Y").".txt", "a");
+    fwrite($file, ":::::::::::::::::::::::ERROR SQL:::::::::::::::::::::::".PHP_EOL);
+    fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$eOs['SQLSTATE'].PHP_EOL);
+    fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$eOs['CODIGO'].PHP_EOL);
+    fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$eOs['MENSAJE'].PHP_EOL);
+    fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - CONSULTA: '.$_EoS.PHP_EOL);
+    fclose($file);    
+  }else {
+    $test=$objBDSQL2->obtenResult2();
+    $objBDSQL2->liberarC2();
+  }
+}catch (\Exception $e){
+  $file = fopen("log/log".date("d-m-Y").".txt", "a");
+  fwrite($file, ":::::::::::::::::::::::TRY CATCH(Tasistencia.php LINEA 283):::::::::::::::::::::::".PHP_EOL);
+  fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - ERROR: '.$e.PHP_EOL);
+  fclose($file);  
+}
+
+
+
 /////////////Periodo y TipoNomina/////////
 $_UPDATEPYT = "UPDATE config SET PC = $_periodo, TN = $_tipoNom WHERE IDUser = '".$_SESSION['IDUser']."';";
 try{
