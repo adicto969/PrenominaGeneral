@@ -7,9 +7,9 @@ $realizado = 0;
 $objBDSQL = new ConexionSRV();
 $objBDSQL->conectarBD();
 
-$cambiarEstado = "IF EXISTS (SELECT estado FROM estatusPeriodo WHERE periodo = $periodo AND tipoNom = $tiponom AND (estado = 0 OR estado = 1))
-	BEGIN UPDATE estatusPeriodo SET estado = $estado WHERE periodo = $periodo AND tipoNom = $tiponom END
-ELSE INSERT INTO estatusPeriodo VALUES ($periodo, $tiponom, GETDATE(), $estado)";
+$cambiarEstado = "IF EXISTS (SELECT estado FROM estatusPeriodo WHERE periodo = $periodo AND tipoNom = $tiponom AND supervisor = $supervisor AND (estado = 0 OR estado = 1))
+	BEGIN UPDATE estatusPeriodo SET estado = $estado WHERE periodo = $periodo AND tipoNom = $tiponom AND supervisor = $supervisor END
+ELSE INSERT INTO estatusPeriodo VALUES ($periodo, $tiponom, GETDATE(), $estado, $supervisor)";
 try{
   $objBDSQL->consultaBD($cambiarEstado);
   echo 3;
