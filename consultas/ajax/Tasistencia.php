@@ -436,7 +436,7 @@ if(date($_fecha1) >= date("Ymd")){
 }
 
 ////////////BOTONES DE GUARDAR EDITAR GENERAR ETC.//////////////
-$consultaEstatus = "SELECT estado FROM estatusPeriodo WHERE periodo = $_periodo AND tipoNom = $_tipoNom";
+$consultaEstatus = "SELECT estado FROM estatusPeriodo WHERE periodo = $_periodo AND tipoNom = $_tipoNom AND supervisor = $supervisor";
 $bloquear = '';
 $resultC = $objBDSQL->consultaBD($consultaEstatus);
 
