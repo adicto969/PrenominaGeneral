@@ -30,14 +30,14 @@ if(isset($_POST['buscar'])){
 
 if($DepOsub == 1)
 {
-  $complemento = "LEFT (l.centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
+  $complemento = "LEFT (l.centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
   $querySQL = "[dbo].[roldehorarioEmp]
               '".$IDEmpresa."',
               '".$centro."',
               '1'";
 
 }else {
-  $complemento = "l.centro = '".$centro."'";
+  $complemento = "l.centro IN (".$_SESSION['centros'].")";
   $querySQL = "[dbo].[roldehorarioEmp]
               '".$IDEmpresa."',
               '".$centro."',

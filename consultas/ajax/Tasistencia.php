@@ -306,11 +306,11 @@ if($DepOsub == 1)
   '".$textExtraPro."',
   '".$ordernar."'
   ";
-  $ComSql = "LEFT (Centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
+  $ComSql = "LEFT (Centro, ".$MascaraEm.")  IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
 }else {
   
   if($_SESSION['Sudo'] == 1){
-    $extringExtra = "L.centro = ''".$centro."''";
+    $extringExtra = "L.centro IN (".$_SESSION['centros'].")";
   }else {
     $extringExtra = 'L.centro IN (SELECT DISTINCT centro FROM Llaves WHERE supervisor = '.$supervisor.' )';
   }
@@ -330,7 +330,7 @@ if($DepOsub == 1)
   '".$busqueda."',
   '".$textExtraPro."',
   '".$ordernar."'";
-  $ComSql = "Centro = '".$centro."'";
+  $ComSql = "Centro IN (".$_SESSION['centros'].")";
 }
 /////////////GENERAR EoS DE LAS CHECADAS///////////
 $_EoS = "[dbo].[ModificaRelojEos] '".$IDEmpresa."', '".$_fecha1."', '".$_fecha2."'";

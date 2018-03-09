@@ -6,9 +6,9 @@ $Tnn = $_POST['Tn'];
 
 if($DepOsub == 1)
 {
-	$ComSql = "LEFT (L.centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
+	$ComSql = "LEFT (L.centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
 }else {
-	$ComSql = "L.centro = '".$centro."'";
+	$ComSql = "L.centro IN (".$_SESSION['centros'].")";
 }
 
 $consulta = "SELECT TOP 5 E.codigo, E.nombre + ' ' + E.ap_paterno + ' ' + E.ap_materno AS nombre

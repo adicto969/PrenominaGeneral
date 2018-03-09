@@ -23,15 +23,15 @@ $busquedaV = "";
 if($DepOsub == 1)
 {
   if($_SESSION['Sudo'] == 1){
-    $ComSql = "LEFT (L.centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
+    $ComSql = "LEFT (L.centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
   }else {
 
   }
   
-  $ComSql2 = "LEFT (centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
+  $ComSql2 = "LEFT (centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
 }else {
-  $ComSql = "L.centro = '".$centro."'";
-  $ComSql2 = "centro = '".$centro."'";
+  $ComSql = "L.centro IN (".$_SESSION['centros'].")";
+  $ComSql2 = "centro IN (".$_SESSION['centros'].")";
 }
 
 if(isset($_POST['buscar'])){

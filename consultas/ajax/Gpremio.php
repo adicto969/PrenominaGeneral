@@ -14,9 +14,9 @@ $resultV = array();
 $resultV['error'] = 0;
 
 if($DepOsub == 1){
-  $ComSql3 = "LEFT (Centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
+  $ComSql3 = "LEFT (Centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
 }else {
-  $ComSql3 = "Centro = '".$centro."'";
+  $ComSql3 = "Centro IN (".$_SESSION['centros'].")";
 }
 
 $consultaD = "SELECT PP, PA

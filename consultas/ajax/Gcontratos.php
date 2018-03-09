@@ -14,11 +14,11 @@ $result['exito'] = 0;
 
 if($DepOsub == 1)
 {
-  $ComSql = "LEFT (llaves.centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
-  $ComSql2 = "LEFT (centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
+  $ComSql = "LEFT (llaves.centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
+  $ComSql2 = "LEFT (centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
 }else {
-  $ComSql = "llaves.centro = '".$centro."'";
-  $ComSql2 = "centro = '".$centro."'";
+  $ComSql = "llaves.centro IN (".$_SESSION['centros'].")";
+  $ComSql2 = "centro IN (".$_SESSION['centros'].")";
 }
 
 $query = "

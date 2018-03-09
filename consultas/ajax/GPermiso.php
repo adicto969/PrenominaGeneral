@@ -81,9 +81,9 @@ if($Periodo > 24 || $Tn == 1){
 
 if($DepOsub == 1)
 {
-	$ComSql = "LEFT (Centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
+	$ComSql = "LEFT (Centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
 }else {
-	$ComSql = "Centro = '".$centro."'";
+	$ComSql = "Centro IN (".$_SESSION['centros'].")";
 }
 
 $fechaSuma = "";

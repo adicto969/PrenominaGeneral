@@ -153,7 +153,7 @@ if($DepOsub == 1)
           'E',
           'min',
           '1'";
-  $ComSql = "LEFT (Dep, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
+  $ComSql = "LEFT (Dep, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
 }else {
   $query = "[dbo].[proc_retardos]
           '".$fecha1."',
@@ -165,7 +165,7 @@ if($DepOsub == 1)
           'E',
           'min',
           '0'";
-  $ComSql = "Dep = '".$centro."'";
+  $ComSql = "Dep IN (".$_SESSION['centros'].")";
 }
 
 $num = $objBDSQL->obtenfilas($query);

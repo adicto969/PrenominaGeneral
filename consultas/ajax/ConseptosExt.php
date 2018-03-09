@@ -43,10 +43,10 @@ if($DepOsub == 1){
             '".$supervisor."',
             '".$IDEmpresa."',
             '".$TN."',
-            'LEFT (Llaves.centro, ".$MascaraEm.") = LEFT (''".$centro."'', ".$MascaraEm.")',
+            'LEFT (Llaves.centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )',
             '1'";
 
-    $ComSql2 = "LEFT (Centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
+    $ComSql2 = "LEFT (Centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
 }else {
   $querySQL = "[dbo].[reporte_checadas_excel_ctro]
             '".$fecha1."',
@@ -55,10 +55,10 @@ if($DepOsub == 1){
             '".$supervisor."',
             '".$IDEmpresa."',
             '".$TN."',
-            'Llaves.centro = ''".$centro."''',
+            'Llaves.centro IN (".$_SESSION['centros'].")',
             '0'";
 
-    $ComSql2 = "Centro = '".$centro."'";
+    $ComSql2 = "Centro IN (".$_SESSION['centros'].")";
 }
 $consultaCa = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'conseptoextra'";
 $reultadoo = $objBDSQL->consultaBD($consultaCa);

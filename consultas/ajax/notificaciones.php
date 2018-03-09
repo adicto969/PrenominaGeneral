@@ -325,7 +325,7 @@ if(isset($_SESSION['IDUser'])){
     $_SESSION['linkExcelN'] = "<li><a href='".$Empleados_Ausentes."' download='".$Empleados_Ausentes."'>Empleados Ausentes</a></li>";
     $_SESSION['notiExcel'] = "1";
   }else {
-    $alert .= $_SESSION['linkExcelN'];
+    $alertas .= $_SESSION['linkExcelN'];
   }
 
   try {

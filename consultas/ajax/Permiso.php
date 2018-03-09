@@ -11,11 +11,11 @@ $Periodo = $_POST['periodo'];
 $Tn = $_POST['TN'];
 
 if($DepOsub == 1){
-    $ComSql2 = "LEFT (Centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
-    $ComSql1 = "LEFT (L.centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
+    $ComSql2 = "LEFT (Centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
+    $ComSql1 = "LEFT (L.centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
 }else {
-    $ComSql2 = "Centro = '".$centro."'";
-    $ComSql1 = "L.centro = '".$centro."'";
+    $ComSql2 = "Centro IN (".$_SESSION['centros'].")";
+    $ComSql1 = "L.centro IN (".$_SESSION['centros'].")";
 }
 if($Periodo <= 24){
 $_fechas = periodo($Periodo, $Tn);

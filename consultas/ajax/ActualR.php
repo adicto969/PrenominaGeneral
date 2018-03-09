@@ -18,10 +18,10 @@ $resultV['error'] = 0;
 
 if($DepOsub == 1){
   $ComSql2 = "LEFT (CENTRO, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
-  $ComSql3 = "LEFT (Dep, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
+  $ComSql3 = "LEFT (Dep, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
 }else {
   $ComSql2 = "CENTRO = '".$centro."'";
-  $ComSql3 = "Dep = '".$centro."'";
+  $ComSql3 = "Dep IN (".$_SESSION['centros'].")";
 }
 
 /////////////////////////////////////////////////

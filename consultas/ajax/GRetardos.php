@@ -166,7 +166,7 @@ if($DepOsub == 1)
           'min',
           '1'
   ";
-  $ComSql = "LEFT (Dep, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
+  $ComSql = "LEFT (Dep, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
 }else {
   $query = "[dbo].[proc_retardos]
           '".$F1."',
@@ -179,7 +179,7 @@ if($DepOsub == 1)
           'min',
           '0'
   ";
-  $ComSql = "Dep = '".$centro."'";
+  $ComSql = "Dep IN (".$_SESSION['centros'].")";
 }
 
 if($Tn == 1){

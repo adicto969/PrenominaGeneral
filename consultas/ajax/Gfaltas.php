@@ -36,9 +36,9 @@ if(isset($_POST['uno'])){
                 AND E.empresa = '".$IDEmpresa."'
                 ".$compleSuper."
                 AND L.tiponom = '".$tipoNom."'
-                AND L.centro = '".$centro."'
+                AND LEFT (L.centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )                
             ORDER BY E.codigo";
-    $LCentro = "LEFT (Centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
+    $LCentro = "LEFT (Centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
   }else {
     $SQLT = "SELECT DISTINCT E.codigo, E.sueldo AS 'Sueldo', R.checada
             FROM empleados AS E
@@ -49,10 +49,10 @@ if(isset($_POST['uno'])){
             	  AND E.empresa = '".$IDEmpresa."'
                   ".$compleSuper."
             	  AND L.tiponom = '".$tipoNom."'
-            	  AND LEFT (L.centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")
+            	  AND L.centro IN (".$_SESSION['centros'].")
             ORDER BY E.codigo";
 
-    $LCentro = "Centro = '".$centro."'";
+    $LCentro = "Centro IN (".$_SESSION['centros'].")";
   }
 
 

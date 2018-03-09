@@ -175,6 +175,32 @@ if(isset($_SESSION['IDUser'])){
   }
 
   $objBDSQL->liberarC();
+
+  ###################################################
+  if(!isset($_SESSION['centros'])){
+    if(empty($_SESSION['centros'])){
+      $query = "SELECT DISTINCT LTRIM(RTRIM(centro)) as centro FROM Llaves WHERE supervisor = '".$supervisor."' AND empresa = '".$IDEmpresa."'";
+      $NombreSupervisor = "";
+      $conResult = $objBDSQL->consultaBD($query);
+      if($conResult['error'] == 1){
+        $file = fopen("log/log".date("d-m-Y").".txt", "a");
+        fwrite($file, ":::::::::::::::::::::::ERROR SQL:::::::::::::::::::::::".PHP_EOL);
+        fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$conResult['SQLSTATE'].PHP_EOL);
+        fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$conResult['CODIGO'].PHP_EOL);
+        fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - '.$conResult['MENSAJE'].PHP_EOL);
+        fwrite($file, '['.date('d/m/Y h:i:s A').']'.' - CONSULTA: '.$query.PHP_EOL);
+        fclose($file);    
+      }else {
+        $_SESSION['centros'] = "";
+        while($datos = $objBDSQL->obtenResult()){          
+          $_SESSION['centros'] .= $datos['centro'].",";
+        }
+        $_SESSION['centros'] = substr($_SESSION['centros'], 0, -1);
+        $objBDSQL->liberarC();
+      }      
+    }
+  }
+  
   ####################################################
 
   $queryH = "DECLARE @return_value int

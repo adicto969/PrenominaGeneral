@@ -53,7 +53,7 @@ if($DepOsub == 1){
           '".$supervisor."',
           '".$IDEmpresa."',
           '".$tipoNom."',
-          'LEFT (L.centro, ".$MascaraEm.") = LEFT (''".$centro."'', ".$MascaraEm.")',
+          'LEFT (L.centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )',
           '1',
           '1',
           '10',
@@ -62,7 +62,7 @@ if($DepOsub == 1){
           '".$ordernar."'
           ";
 
-    $LCentro = "LEFT (Centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
+    $LCentro = "LEFT (Centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
 }else {
   $SQLT = "[dbo].[reporte_checadas_excel_ctro]
           '".$fecha1."',
@@ -79,7 +79,7 @@ if($DepOsub == 1){
           '',
           ''";
 
-    $LCentro = "Centro = '".$centro."'";
+    $LCentro = "Centro IN (".$_SESSION['centros'].")";
 }
 
 

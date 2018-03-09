@@ -14,13 +14,13 @@ $correo = $_POST["userN"];
 $porcentaje = $_POST['porC'];
 
 if($DepOsub == 1){
-  $compSql = "LEFT (llaves.centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
-  $compSql2 = "LEFT (b.centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
-  $ComSql3 = "LEFT (centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
+  $compSql = "LEFT (llaves.centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
+  $compSql2 = "LEFT (b.centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
+  $ComSql3 = "LEFT (centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
 }else {
-  $compSql = "llaves.centro = '".$centro."'";
-  $compSql2 = "b.centro = '".$centro."'";
-  $ComSql3 = "centro = '".$centro."'";
+  $compSql = "llaves.centro IN (".$_SESSION['centros'].")";
+  $compSql2 = "b.centro IN (".$_SESSION['centros'].")";
+  $ComSql3 = "centro IN (".$_SESSION['centros'].")";
 }
 
 

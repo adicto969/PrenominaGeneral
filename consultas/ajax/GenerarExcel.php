@@ -192,7 +192,7 @@ if($tipo == "destajo"){
                    LEFT JOIN destajo AS D ON D.Codigo = L.codigo AND D.IDEmpresa = L.empresa AND D.Centro = L.centro AND D.fecha = '".date("Y")."'
 
                    WHERE L.empresa = ".$IDEmpresa." AND
-            			 LEFT (L.centro, ".$MascaraEm.") = LEFT ('".$Dep."', ".$MascaraEm.") AND
+            			 LEFT (L.centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." ) AND
             			 L.tiponom = '".$tn."' AND
             			 E.activo = 'S'";
       }
@@ -216,7 +216,7 @@ if($tipo == "destajo"){
                    LEFT JOIN destajo AS D ON D.Codigo = L.codigo AND D.IDEmpresa = L.empresa AND D.Centro = L.centro AND D.fecha = '".date("Y")."'
 
                    WHERE L.empresa = ".$IDEmpresa." AND
-                   LEFT (L.centro, ".$MascaraEm.") = LEFT ('".$Dep."', ".$MascaraEm.") AND
+                   LEFT (L.centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." ) AND
                    L.supervisor = '".$supervisor."' AND
                    L.tiponom = '".$tn."' AND
                    E.activo = 'S'";
@@ -225,7 +225,7 @@ if($tipo == "destajo"){
       if($Dep == 'todos' || $Dep == 'TODOS' || $Dep == 'todo' || $Dep == 'TODO'){
 	       $ComSql2 = "";
       }else {
-	       $ComSql2 = "LEFT (Centro, ".$MascaraEm.") = LEFT ('".$Dep."', ".$MascaraEm.")";
+	       $ComSql2 = "LEFT (Centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
       }
 
   }else {
@@ -246,7 +246,7 @@ if($tipo == "destajo"){
                    LEFT JOIN destajo AS D ON D.Codigo = L.codigo AND D.IDEmpresa = L.empresa AND D.Centro = L.centro AND D.fecha = '".date("Y")."'
 
                    WHERE L.empresa = ".$IDEmpresa." AND
-            			 L.centro = '".$Dep."' AND
+            			 L.centro IN (".$_SESSION['centros'].") AND
             			 L.tiponom = '".$tn."' AND
                    E.activo = 'S'";
       }
@@ -271,7 +271,7 @@ if($tipo == "destajo"){
                    LEFT JOIN destajo AS D ON D.Codigo = L.codigo AND D.IDEmpresa = L.empresa AND D.Centro = L.centro AND D.fecha = '".date("Y")."'
 
                    WHERE L.empresa = ".$IDEmpresa." AND
-                   L.centro = '".$Dep."' AND
+                   L.centro IN (".$_SESSION['centros'].") AND
                    L.supervisor = '".$supervisor."' AND
                    L.tiponom = '".$tn."' AND
                    E.activo = 'S'
@@ -282,7 +282,7 @@ if($tipo == "destajo"){
     if($Dep == 'todos' || $Dep == 'TODOS' || $Dep == 'todo' || $Dep == 'TODO'){
 	  $ComSql2 = "";
     }else {
-    	  $ComSql2 = "Centro = '".$Dep."'";
+    	  $ComSql2 = "Centro IN (".$_SESSION['centros'].")";
     }
 
   }
@@ -343,7 +343,7 @@ if($tipo == "destajo"){
     '".$supervisor."',
     '".$IDEmpresa."',
     '".$TN."',
-    'LEFT (L.centro, ".$MascaraEm.") = LEFT (''".$centro."'', ".$MascaraEm.")',
+    'LEFT (L.centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )',
     '1',
     '1',
     '10',
@@ -351,7 +351,7 @@ if($tipo == "destajo"){
     '',
     '".$ordernar."'
     ";
-    $ComSql = "LEFT (Centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
+    $ComSql = "LEFT (Centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
   }else {
     $queryGeneral = "
     [dbo].[reporte_checadas_excel_ctro]
@@ -361,14 +361,14 @@ if($tipo == "destajo"){
     '".$supervisor."',
     '".$IDEmpresa."',
     '".$TN."',
-    'L.centro = ''".$centro."''',
+    'L.centro IN (".$_SESSION['centros'].")',
     '0',
     '1',
     '10',
     '',
     '',
     ''";
-    $ComSql = "Centro = '".$centro."'";
+    $ComSql = "Centro IN (".$_SESSION['centros'].")";
   }
 
   $Nresultados = 1;
@@ -439,11 +439,11 @@ if($tipo == "destajo"){
 
   if($DepOsub == 1)
   {
-    $ComSql = "LEFT (llaves.centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
-    $ComSql2 = "LEFT (centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
+    $ComSql = "LEFT (llaves.centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
+    $ComSql2 = "LEFT (centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
   }else {
-    $ComSql = "llaves.centro = '".$centro."'";
-    $ComSql2 = "centro = '".$centro."'";
+    $ComSql = "llaves.centro IN (".$_SESSION['centros'].")";
+    $ComSql2 = "centro IN (".$_SESSION['centros'].")";
   }
 
   if($supervisor == 0){
@@ -576,7 +576,7 @@ if($numCol >= 1){
             'E',
             'min',
             '1'";
-    $ComSql = "LEFT (Dep, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
+    $ComSql = "LEFT (Dep, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
   }else {
     $query = "[dbo].[proc_retardos]
             '".$fecha1."',
@@ -588,7 +588,7 @@ if($numCol >= 1){
             'E',
             'min',
             '0'";
-    $ComSql = "Dep = '".$centro."'";
+    $ComSql = "Dep IN (".$_SESSION['centros'].")";
   }
 
   $objBDSQL->consultaBD($query);
@@ -808,29 +808,54 @@ if($numCol >= 1){
   $fecha2 = $ayoB.$mesB.$diaB;
 
   if($DepOsub == 1){
-    $querySQL = "[dbo].[reporte_checadas_excel_ctro]
-              '".$fecha1."',
-              '".$fecha2."',
-              '".$centro."',
-              '0',
-              '".$IDEmpresa."',
-              '".$TN."',
-              'LEFT (Llaves.centro, ".$MascaraEm.") = LEFT (''".$centro."'', ".$MascaraEm.")',
-              '1'";
+    if($_SESSION['Sudo'] == 1){
+      $extringExtra = "LEFT (L.centro, ".$MascaraEm.") = LEFT (''".$centro."'', ".$MascaraEm.")";
+    }else {
+      $extringExtra = 'LEFT (L.centro, '.$MascaraEm.') IN (SELECT DISTINCT LEFT (centro, '.$MascaraEm.')  FROM Llaves WHERE supervisor = '.$supervisor.' )';
+    }
+    
+    $querySQL = "
+    [dbo].[reporte_checadas_excel_ctro]
+    '".$fecha1."',
+    '".$fecha2."',
+    '".$centro."',
+    '".$supervisor."',
+    '".$IDEmpresa."',
+    '".$TN."',
+    '$extringExtra',
+    '1',
+    '1',
+    '1000',
+    '',
+    '',
+    'codigo'
+    ";
 
-      $ComSql2 = "LEFT (Centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
+      $ComSql2 = "LEFT (Centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
   }else {
-    $querySQL = "[dbo].[reporte_checadas_excel_ctro]
-              '".$fecha1."',
-              '".$fecha2."',
-              '".$centro."',
-              '0',
-              '".$IDEmpresa."',
-              '".$TN."',
-              'Llaves.centro = ''".$centro."''',
-              '0'";
+    if($_SESSION['Sudo'] == 1){
+      $extringExtra = "L.centro = ''".$centro."''";
+    }else {
+      $extringExtra = 'L.centro IN (SELECT DISTINCT centro FROM Llaves WHERE supervisor = '.$supervisor.' )';
+    }
+    $querySQL = "
+    [dbo].[reporte_checadas_excel_ctro]
+    '".$fecha1."',
+    '".$fecha2."',
+    '".$centro."',
+    '".$supervisor."',
+    '".$IDEmpresa."',
+    '".$TN."',
+    '$extringExtra',
+    '1',
+    '1',
+    '1000',
+    '',
+    '',
+    'codigo'
+    ";
 
-      $ComSql2 = "Centro = '".$centro."'";
+      $ComSql2 = "Centro IN (".$_SESSION['centros'].")";
   }
 
   $objBDSQL->consultaBD($querySQL);
@@ -902,7 +927,7 @@ if($numCol >= 1){
                    LEFT JOIN JExtras AS D ON D.Codigo = L.codigo AND D.IDEmpresa = L.empresa AND D.Centro = L.centro AND D.fecha = '".date("Y")."' AND D.Periodo = '".$PC."'
 
                    WHERE L.empresa = ".$IDEmpresa." AND
-            			 LEFT (L.centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.") AND
+            			 LEFT (L.centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." ) AND
             			 L.tiponom = '".$TN."' AND
             			 E.activo = 'S'";
     }else {
@@ -912,13 +937,13 @@ if($numCol >= 1){
                    LEFT JOIN JExtras AS D ON D.Codigo = L.codigo AND D.IDEmpresa = L.empresa AND D.Centro = L.centro AND D.fecha = '".date("Y")."' AND D.Periodo = '".$PC."'
 
                    WHERE L.empresa = ".$IDEmpresa." AND
-                   LEFT (L.centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.") AND
+                   LEFT (L.centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." ) AND
                    L.supervisor = '".$supervisor."' AND
                    L.tiponom = '".$TN."' AND
                    E.activo = 'S'";
     }
 
-      $ComSql2 = "LEFT (Centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
+      $ComSql2 = "LEFT (Centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
   }else {
     if($supervisor == 0){
       $querySQL2 = "
@@ -927,7 +952,7 @@ if($numCol >= 1){
                    LEFT JOIN JExtras AS D ON D.Codigo = L.codigo AND D.IDEmpresa = L.empresa AND D.Centro = L.centro AND D.fecha = '".date("Y")."' AND D.Periodo = '".$PC."'
 
                    WHERE L.empresa = ".$IDEmpresa." AND
-            			 L.centro = '".$centro."' AND
+            			 L.centro IN (".$_SESSION['centros'].") AND
             			 L.tiponom = '".$TN."' AND
                    E.activo = 'S'";
     }else {
@@ -937,14 +962,14 @@ if($numCol >= 1){
                    LEFT JOIN JExtras AS D ON D.Codigo = L.codigo AND D.IDEmpresa = L.empresa AND D.Centro = L.centro AND D.fecha = '".date("Y")."' AND D.Periodo = '".$PC."'
 
                    WHERE L.empresa = ".$IDEmpresa." AND
-                   L.centro = '".$centro."' AND
+                   L.centro IN (".$_SESSION['centros'].") AND
                    L.supervisor = '".$supervisor."' AND
                    L.tiponom = '".$TN."' AND
                    E.activo = 'S'
                    ";
     }
 
-      $ComSql2 = "Centro = '".$centro."'";
+      $ComSql2 = "Centro IN (".$_SESSION['centros'].")";
   }
   $contador = 1;
   $FILA = 7;

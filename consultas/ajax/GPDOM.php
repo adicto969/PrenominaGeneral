@@ -185,9 +185,9 @@ else if($nuD == 2){
 
 if($DepOsub == 1)
 {
-	$comSql2 = "LEFT (relch_registro.centro, ".$MascaraEm.") = LEFT ('".$Dep."', ".$MascaraEm.")";
+	$comSql2 = "LEFT (relch_registro.centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
 }else {
-	$comSql2 = "relch_registro.centro = '".$Dep."'";
+	$comSql2 = "relch_registro.centro IN (".$_SESSION['centros'].")";
 }
 
 

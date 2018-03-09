@@ -69,13 +69,13 @@ if($DepOsub == 1){
                  LEFT JOIN JExtras AS D ON D.Codigo = L.codigo AND D.IDEmpresa = L.empresa AND D.Centro = L.centro AND D.fecha = '".date("Y")."' AND D.Periodo = '".$PC."'
 
                  WHERE L.empresa = ".$IDEmpresa." AND
-                 LEFT (L.centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.") AND
+                 LEFT (L.centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." ) AND
                  L.supervisor = '".$supervisor."' AND
                  L.tiponom = '".$tnomina."' AND
                  E.activo = 'S'";
   }
 
-    $ComSql2 = "LEFT (Centro, ".$MascaraEm.") = LEFT ('".$centro."', ".$MascaraEm.")";
+    $ComSql2 = "LEFT (Centro, ".$MascaraEm.") IN (SELECT DISTINCT LEFT (centro, ".$MascaraEm.")  FROM Llaves WHERE supervisor = ".$supervisor." )";
 }else {
   if($supervisor == 0){
     $querySQL2 = "
