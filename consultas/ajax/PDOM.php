@@ -216,7 +216,8 @@ if($Dep == "TODOS" || $Dep == "TODO" || $Dep == "todos" || $Dep == "todo"){
         relch_registro.fecha BETWEEN '".$fecha1."' AND '".$fecha2."' and
         (LOWER(DATENAME(dw, relch_registro.fecha)) = 'sunday' OR LOWER(DATENAME(dw, relch_registro.fecha)) = 'domingo') and
         ".$whereCE."
-        relch_registro.tiponom = '".$Tn."'        
+        relch_registro.tiponom = '".$Tn."' and
+	relch_registro.checada <> '00:00:00'    
         group by fecha, relch_registro.codigo, ACTIVIDAD, relch_registro.centro
         order by relch_registro.centro
         ";
@@ -243,7 +244,8 @@ if($Dep == "TODOS" || $Dep == "TODO" || $Dep == "todos" || $Dep == "todo"){
         (LOWER(DATENAME(dw, relch_registro.fecha)) = 'sunday' OR LOWER(DATENAME(dw, relch_registro.fecha)) = 'domingo') and
         ".$whereCE."
         relch_registro.tiponom = '".$Tn."' and
-        ".$ComSql2."
+        ".$ComSql2." and
+	relch_registro.checada <> '00:00:00'
         group by fecha, relch_registro.codigo, ACTIVIDAD
         order by relch_registro.codigo asc
         ";
